@@ -1,0 +1,35 @@
+PODS:
+  - Bond (7.8.1):
+    - Differ (~> 1.4)
+    - ReactiveKit (~> 3.14)
+  - Differ (1.4.5)
+  - Kingfisher (4.10.1)
+  - MVVMFoundation (0.1.0):
+    - Bond
+    - Kingfisher
+  - ReactiveKit (3.19.1)
+
+DEPENDENCIES:
+  - MVVMFoundation (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - Bond
+    - Differ
+    - Kingfisher
+    - ReactiveKit
+
+EXTERNAL SOURCES:
+  MVVMFoundation:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Bond: 87075c7f20f37ea3e73dc7057fce839787bf46eb
+  Differ: 3b6bd78e2b20cc795d9a86f7641d087524e4273e
+  Kingfisher: c148cd7b47ebde9989f6bc7c27dcaa79d81279a0
+  MVVMFoundation: 6694e038635dde64ed449e6543d9dca8521727b9
+  ReactiveKit: a36ebeb959fe6852dd674cc423163bfffb7e0541
+
+PODFILE CHECKSUM: ec466858bf67b8df9111ca0728a9b654f9eb84c1
+
+COCOAPODS: 1.11.2

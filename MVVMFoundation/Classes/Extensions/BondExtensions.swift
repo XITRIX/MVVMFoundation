@@ -41,6 +41,16 @@ public extension ReactiveExtensions where Base: UIImageView {
             $0.kf.setImage(with: $1)
         }
     }
+
+    var imagePath: Bond<String?> {
+        return bond {
+            guard let path = $1,
+                  let url = URL(string: path)
+            else { return }
+
+            $0.kf.setImage(with: url)
+        }
+    }
 }
 
 public extension UIControl {

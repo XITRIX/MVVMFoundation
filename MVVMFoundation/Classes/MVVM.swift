@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 open class MVVM {
     public private(set) static var shared: MVVM!
@@ -23,6 +24,12 @@ open class MVVM {
 
         registerContainer()
         registerRouting()
+    }
+
+    public static func resolve(in window: UIWindow?) {
+        guard let window = window else { return }
+        MVVM.shared.router.resolveRoot(in: window)
+        window.makeKeyAndVisible()
     }
 
     open func registerContainer() {

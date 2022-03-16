@@ -8,10 +8,15 @@
 import Foundation
 import UIKit
 
+struct MvvmRootModel {
+    var rootModel: String
+    var wrappedInNavigation: Bool
+}
+
 public class Router {
     private let container: Container
     private var map = [String: Any]()
-    private var rootModel: String?
+    private var rootModel: MvvmRootModel?
 
     public init(container: Container) {
         self.container = container
@@ -20,20 +25,26 @@ public class Router {
 
 // MARK: - Public
 public extension Router {
-    func registerRoot(_ rootModel: MvvmViewModelProtocol.Type) {
-        self.rootModel = "\(rootModel)"
+    func registerRoot(_ rootModel: MvvmViewModelProtocol.Type, wrappedInNavigation: Bool = false) {
+        self.rootModel = MvvmRootModel(rootModel: "\(rootModel)", wrappedInNavigation: wrappedInNavigation)
     }
 
     func resolveRoot(in window: UIWindow) {
         guard let rootModel = rootModel,
-              let resolver = map["\(rootModel)"]
+              let resolver = map["\(rootModel.rootModel)"]
         else { return }
 
-        let viewModel = container.resolve(id: rootModel) as MvvmViewModelProtocol
+        let viewModel = container.resolve(id: rootModel.rootModel) as MvvmViewModelProtocol
         let vc = container.resolve(id: "\(resolver)") as MvvmViewControllerProtocol
         vc.setViewModel(viewModel)
 
-        window.rootViewController = vc
+        if rootModel.wrappedInNavigation {
+            let nvc = UINavigationController.safeResolve()
+            nvc.viewControllers = [vc]
+            window.rootViewController = nvc
+        } else {
+            window.rootViewController = vc
+        }
     }
 }
 

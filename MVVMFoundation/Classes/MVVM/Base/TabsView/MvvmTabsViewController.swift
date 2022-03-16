@@ -10,7 +10,7 @@ import UIKit
 open class MvvmTabsViewController<ViewModel: MvvmTabsViewModelProtocol>: UITabBarController, MvvmViewControllerProtocol {
     public var _viewModel: MvvmViewModelProtocol!
     var viewModel: ViewModel { _viewModel as! ViewModel }
-    private var shown = false
+    private var wasPresented = false
 
     open override var navigationController: UINavigationController? {
         selectedViewController as? UINavigationController
@@ -19,8 +19,8 @@ open class MvvmTabsViewController<ViewModel: MvvmTabsViewModelProtocol>: UITabBa
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if !shown {
-            shown = true
+        if !wasPresented {
+            wasPresented = true
 
             viewModel.viewModels.observeNext { [unowned self] viewModels in
                 let viewControllers = viewModels.collection.map { model -> UIViewController in

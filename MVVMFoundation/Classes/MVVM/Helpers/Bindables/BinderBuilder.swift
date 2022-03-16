@@ -25,3 +25,9 @@ public extension NSObject {
         block().forEach { $0.dispose(in: disposeBag) }
     }
 }
+
+public extension MvvmViewModel {
+    func bind(in disposeBag: DisposeBag, @BinderBuilder block: () -> [Disposable]) {
+        block().forEach { $0.dispose(in: disposeBag) }
+    }
+}

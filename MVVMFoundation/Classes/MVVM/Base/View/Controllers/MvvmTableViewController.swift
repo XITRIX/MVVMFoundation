@@ -14,12 +14,39 @@ open class MvvmTableViewController<ViewModel: MvvmViewModelProtocol>: UITableVie
         didSet { updateOverlay(oldValue) }
     }
 
+    open class var style: UITableView.Style {
+        if #available(iOS 13.0, *) {
+            return .insetGrouped
+        } else {
+            return .grouped
+        }
+    }
+
+    open var toolbarHidden: Bool { toolbarItems.isNilOrEmpty }
+
+    public init() {
+        super.init(style: Self.style)
+    }
+
+    override public init(style: UITableView.Style) {
+        super.init(style: style)
+    }
+
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+
     @available(*, unavailable)
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         viewModel.appear()
         setupView()
         binding()
+    }
+
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setToolbarHidden(toolbarHidden, animated: false)
     }
 
     open func setupView() {}
@@ -48,16 +75,16 @@ open class MvvmTableViewController<ViewModel: MvvmViewModelProtocol>: UITableVie
 
         // Remove old
         old?.willMove(toParent: nil)
-        self.tableView.backgroundView = nil
+        tableView.backgroundView = nil
         old?.removeFromParent()
 
         // Add new one
         guard let overlay = overlay else { return }
 
-        self.addChild(overlay)
-        overlay.view.frame = self.view.bounds
+        addChild(overlay)
+        overlay.view.frame = view.bounds
         overlay.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        self.tableView.backgroundView = overlay.view
+        tableView.backgroundView = overlay.view
         overlay.didMove(toParent: self)
     }
 }

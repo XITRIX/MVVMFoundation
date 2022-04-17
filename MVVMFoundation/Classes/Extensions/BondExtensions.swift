@@ -7,9 +7,23 @@
 
 import Bond
 import Foundation
-import Kingfisher
+//import Kingfisher
 import ReactiveKit
 import UIKit
+
+infix operator =>
+public func =><S: SignalProtocol, B: BindableProtocol>(lhs: S, rhs: B) -> Disposable where S.Element == B.Element, S.Error == Never {
+    lhs.bind(to: rhs)
+}
+
+public func =><S: SignalProtocol, B: BindableProtocol>(lhs: S, rhs: B) -> Disposable where B.Element: OptionalProtocol, B.Element.Wrapped == S.Element, S.Error == Never {
+    lhs.bind(to: rhs)
+}
+
+infix operator <=>
+public func <=><B: BindableProtocol>(lhs: B, rhs: B) -> Disposable where B.Error == Never, B: SignalProtocol {
+    lhs.bidirectionalBind(to: rhs)
+}
 
 public extension UIButton {
     func bind(_ action: @escaping () -> ()) -> Disposable {
@@ -35,23 +49,23 @@ public extension MutableChangesetContainerProtocol where Changeset: OrderedColle
 //    }
 // }
 
-public extension ReactiveExtensions where Base: UIImageView {
-    var imageUrl: Bond<URL?> {
-        return bond {
-            $0.kf.setImage(with: $1)
-        }
-    }
-
-    var imagePath: Bond<String?> {
-        return bond {
-            guard let path = $1,
-                  let url = URL(string: path)
-            else { return }
-
-            $0.kf.setImage(with: url)
-        }
-    }
-}
+//public extension ReactiveExtensions where Base: UIImageView {
+//    var imageUrl: Bond<URL?> {
+//        return bond {
+//            $0.kf.setImage(with: $1)
+//        }
+//    }
+//
+//    var imagePath: Bond<String?> {
+//        return bond {
+//            guard let path = $1,
+//                  let url = URL(string: path)
+//            else { return }
+//
+//            $0.kf.setImage(with: url)
+//        }
+//    }
+//}
 
 public extension UIControl {
     func bindTap(_ function: @escaping () -> ()) -> Disposable {

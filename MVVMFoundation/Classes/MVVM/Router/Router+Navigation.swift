@@ -32,7 +32,7 @@ public extension Router {
         guard let fvc = fromViewModel.attachedView
         else { return }
 
-        let vc = resolve(viewModel: TVM.self)
+        let vc = resolve(viewModel: targetViewModel)
 
         switch type {
         case .push:

@@ -15,6 +15,9 @@ public protocol MvvmViewModelProtocol: DisposeBagProvider {
     var state: Observable<MvvmViewModelState> { get }
 
     func setAttachedView(_ viewController: UIViewController)
+    
+    func setup()
+    func binding()
     func appear()
 }
 
@@ -28,6 +31,8 @@ open class MvvmViewModel: MvvmViewModelProtocol {
         attachedView = viewController
     }
 
+    open func setup() {}
+
     open func binding() {}
 
     open func appear() {}
@@ -35,6 +40,7 @@ open class MvvmViewModel: MvvmViewModelProtocol {
     public private(set) weak var attachedView: UIViewController!
 
     public required init() {
+        setup()
         binding()
     }
 }

@@ -40,3 +40,13 @@ open class MVVM {
 
     open func registerRouting() {}
 }
+
+extension MVVM {
+    public static func resolve<T: Any>(type: T.Type) -> T {
+        shared.container.resolve(type: type)
+    }
+
+    public static func resolve<T: Any>() -> T {
+        shared.container.resolve() as T
+    }
+}

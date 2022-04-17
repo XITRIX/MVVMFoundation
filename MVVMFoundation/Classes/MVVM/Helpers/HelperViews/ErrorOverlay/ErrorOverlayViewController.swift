@@ -26,7 +26,10 @@ public class ErrorOverlayViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        reloadButton.layer.cornerCurve = .continuous
+        if #available(iOS 13.0, *) {
+            reloadButton.layer.cornerCurve = .continuous
+        }
+        
         if let error = error {
             errorTitle.text = error.title
             errorMessage.text = error.message

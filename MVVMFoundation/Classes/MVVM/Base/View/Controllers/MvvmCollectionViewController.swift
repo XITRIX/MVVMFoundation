@@ -1,21 +1,33 @@
 //
-//  MvvmViewController.swift
-//  DemoMVVM
+//  MvvmTableViewController.swift
+//  ReManga
 //
-//  Created by Даниил Виноградов on 02.11.2021.
+//  Created by Даниил Виноградов on 04.11.2021.
 //
 
 import UIKit
 
-open class MvvmViewController<ViewModel: MvvmViewModelProtocol>: UIViewController, MvvmViewControllerProtocol {
+open class MvvmCollectionViewController<ViewModel: MvvmViewModelProtocol>: UICollectionViewController, MvvmViewControllerProtocol {
     public var _viewModel: MvvmViewModelProtocol!
     public var viewModel: ViewModel { _viewModel as! ViewModel }
     public var overlay: UIViewController? {
         didSet { updateOverlay(oldValue) }
     }
+    
+    public init() {
+        super.init(nibName: String(describing: Self.self), bundle: .main)
+    }
+
+    public override init(collectionViewLayout layout: UICollectionViewLayout) {
+        super.init(collectionViewLayout: layout)
+    }
+
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
 
     @available(*, unavailable)
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         viewModel.appear()
         setupView()
@@ -46,7 +58,18 @@ open class MvvmViewController<ViewModel: MvvmViewModelProtocol>: UIViewControlle
     open func updateOverlay(_ old: UIViewController?) {
         if overlay == old { return }
 
-        old?.remove()
-        overlay?.add(to: self)
+        // Remove old
+        old?.willMove(toParent: nil)
+        collectionView.backgroundView = nil
+        old?.removeFromParent()
+
+        // Add new one
+        guard let overlay = overlay else { return }
+
+        addChild(overlay)
+        overlay.view.frame = view.bounds
+        overlay.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        collectionView.backgroundView = overlay.view
+        overlay.didMove(toParent: self)
     }
 }

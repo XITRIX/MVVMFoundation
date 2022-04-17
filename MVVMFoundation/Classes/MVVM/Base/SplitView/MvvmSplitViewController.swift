@@ -62,7 +62,6 @@ open class MvvmSplitViewController<ViewModel: MvvmSplitViewModelProtocol>: UISpl
         nvc.setViewControllers(firstControllersStack, animated: false)
 
         let snvc = UINavigationController.safeResolve()
-        snvc.view.backgroundColor = .systemBackground
         snvc.setViewControllers(controllers, animated: false)
         return snvc
     }

@@ -21,7 +21,7 @@ public func =><S: SignalProtocol, B: BindableProtocol>(lhs: S, rhs: B) -> Dispos
 }
 
 infix operator <=>
-public func <=><B: BindableProtocol>(lhs: B, rhs: B) -> Disposable where B.Error == Never, B: SignalProtocol {
+public func <=><L: BindableProtocol, R: BindableProtocol & SignalProtocol>(lhs: L, rhs: R) -> Disposable where L: SignalProtocol, L.Error == Never, R.Element == L.Element, R.Error == L.Error {
     lhs.bidirectionalBind(to: rhs)
 }
 

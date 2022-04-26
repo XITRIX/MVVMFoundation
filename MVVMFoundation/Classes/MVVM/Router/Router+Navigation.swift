@@ -24,6 +24,17 @@ public extension Router {
             fvc.navigationController?.popViewController(animated: true)
         }
     }
+
+    func dismissToRoot<FVM: MvvmViewModelProtocol>(from fromViewModel: FVM, completion: (() -> ())? = nil) {
+        guard let fvc = fromViewModel.attachedView
+        else { return }
+
+        if fvc.isModal {
+            fvc.dismiss(animated: true, completion: completion)
+        } else {
+            fvc.navigationController?.popToRootViewController(animated: true)
+        }
+    }
 }
 
 // MARK: - MvvmViewModel

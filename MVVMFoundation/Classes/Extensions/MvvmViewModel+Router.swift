@@ -31,4 +31,12 @@ public extension MvvmViewModel {
     func dismiss(completion: (() -> ())?) {
         MVVM.shared.router.dismiss(from: self, completion: completion)
     }
+
+    func dismissToRoot() {
+        dismiss(completion: nil)
+    }
+
+    func dismissToRoot(completion: (() -> ())?) {
+        MVVM.shared.router.dismissToRoot(from: self, completion: completion)
+    }
 }

@@ -7,21 +7,21 @@
 
 import Bond
 import Foundation
-//import Kingfisher
+// import Kingfisher
 import ReactiveKit
 import UIKit
 
 infix operator =>
-public func =><S: SignalProtocol, B: BindableProtocol>(lhs: S, rhs: B) -> Disposable where S.Element == B.Element, S.Error == Never {
+public func => <S: SignalProtocol, B: BindableProtocol>(lhs: S, rhs: B) -> Disposable where S.Element == B.Element, S.Error == Never {
     lhs.bind(to: rhs)
 }
 
-public func =><S: SignalProtocol, B: BindableProtocol>(lhs: S, rhs: B) -> Disposable where B.Element: OptionalProtocol, B.Element.Wrapped == S.Element, S.Error == Never {
+public func => <S: SignalProtocol, B: BindableProtocol>(lhs: S, rhs: B) -> Disposable where B.Element: OptionalProtocol, B.Element.Wrapped == S.Element, S.Error == Never {
     lhs.bind(to: rhs)
 }
 
 infix operator <=>
-public func <=><L: BindableProtocol, R: BindableProtocol & SignalProtocol>(lhs: L, rhs: R) -> Disposable where L: SignalProtocol, L.Error == Never, R.Element == L.Element, R.Error == L.Error {
+public func <=> <L: BindableProtocol, R: BindableProtocol & SignalProtocol>(lhs: L, rhs: R) -> Disposable where L: SignalProtocol, L.Error == Never, R.Element == L.Element, R.Error == L.Error {
     lhs.bidirectionalBind(to: rhs)
 }
 
@@ -49,7 +49,7 @@ public extension MutableChangesetContainerProtocol where Changeset: OrderedColle
 //    }
 // }
 
-//public extension ReactiveExtensions where Base: UIImageView {
+// public extension ReactiveExtensions where Base: UIImageView {
 //    var imageUrl: Bond<URL?> {
 //        return bond {
 //            $0.kf.setImage(with: $1)
@@ -65,7 +65,7 @@ public extension MutableChangesetContainerProtocol where Changeset: OrderedColle
 //            $0.kf.setImage(with: url)
 //        }
 //    }
-//}
+// }
 
 public extension UIControl {
     func bindTap(_ function: @escaping () -> ()) -> Disposable {
@@ -76,5 +76,15 @@ public extension UIControl {
 public extension UIBarButtonItem {
     func bindTap(_ function: @escaping () -> ()) -> Disposable {
         reactive.tap.observeNext(with: function)
+    }
+}
+
+public extension ReactiveExtensions where Base: UISwitch {
+    var isOnAnimated: DynamicSubject<Bool> {
+        return dynamicSubject(
+            signal: controlEvents(.valueChanged).eraseType(),
+            get: { $0.isOn },
+            set: { $0.setOn($1, animated: true) }
+        )
     }
 }

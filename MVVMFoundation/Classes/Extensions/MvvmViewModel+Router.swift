@@ -40,3 +40,15 @@ public extension MvvmViewModel {
         MVVM.shared.router.dismissToRoot(from: self, completion: completion)
     }
 }
+
+public extension MvvmViewModelWith {
+    static func resolve(with model: Model) -> Self {
+        let vm = MVVM.shared.container.resolve(type: Self.self)
+        vm.prepare(with: model)
+        return vm
+    }
+
+    static func resolveView(with model: Model) -> MvvmViewControllerProtocol {
+        MVVM.shared.router.resolve(viewModel: Self.self, prepare: model)
+    }
+}

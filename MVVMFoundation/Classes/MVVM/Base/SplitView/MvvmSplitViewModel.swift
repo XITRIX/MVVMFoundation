@@ -9,6 +9,6 @@ import Foundation
 import Bond
 
 public protocol MvvmSplitViewModelProtocol: MvvmViewModel {
-    var primaryViewModel: MvvmViewModel.Type { get }
-    var secondaryViewModel: MvvmViewModel.Type? { get }
+    var primaryViewModel: (model: MvvmViewModel.Type, wrappedInNavigation: Bool) { get }
+    var secondaryViewModel: (model: MvvmViewModel.Type, wrappedInNavigation: Bool)? { get }
 }

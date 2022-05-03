@@ -16,15 +16,29 @@ open class MvvmSplitViewController<ViewModel: MvvmSplitViewModelProtocol>: UISpl
 
         delegate = self
         preferredDisplayMode = .oneBesideSecondary
-        viewControllers.append(viewModel.primaryViewModel.resolveView())
+        var viewController: UIViewController = viewModel.primaryViewModel.model.resolveView()
+        if viewModel.primaryViewModel.wrappedInNavigation {
+            let nvc = UINavigationController.safeResolve()
+            nvc.viewControllers = [viewController]
+            viewController = nvc
+        }
+        viewControllers.append(viewController)
         if let secondary = viewModel.secondaryViewModel {
-            viewControllers.append(secondary.resolveView())
+            var viewController: UIViewController = secondary.model.resolveView()
+            if secondary.wrappedInNavigation {
+                let nvc = UINavigationController.safeResolve()
+                nvc.viewControllers = [viewController]
+                viewController = nvc
+            }
+            viewControllers.append(viewController)
         } else {
             viewControllers.append(UINavigationController.safeResolve())
         }
     }
 
     open override func showDetailViewController(_ vc: UIViewController, sender: Any?) {
+        vc.isSecondary = true
+
         if isCollapsed {
             guard let from = sender as? UIViewController
             else { return }
@@ -63,6 +77,7 @@ open class MvvmSplitViewController<ViewModel: MvvmSplitViewModelProtocol>: UISpl
 
         let snvc = UINavigationController.safeResolve()
         snvc.setViewControllers(controllers, animated: false)
+        snvc.setToolbarHidden((controllers.last?.toolbarItems).isNilOrEmpty, animated: false)
         return snvc
     }
 }

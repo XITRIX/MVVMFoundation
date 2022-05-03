@@ -49,6 +49,11 @@ open class MvvmTableViewController<ViewModel: MvvmViewModelProtocol>: UITableVie
         navigationController?.setToolbarHidden(toolbarHidden, animated: false)
     }
 
+    open override func setToolbarItems(_ toolbarItems: [UIBarButtonItem]?, animated: Bool) {
+        super.setToolbarItems(toolbarItems, animated: animated)
+        navigationController?.setToolbarHidden(toolbarHidden, animated: animated)
+    }
+
     open func setupView() {}
     open func binding() {
         viewModel.title.observeNext(with: { [unowned self] in title = $0 }).dispose(in: bag)

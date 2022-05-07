@@ -11,7 +11,7 @@ open class MvvmSplitViewController<ViewModel: MvvmSplitViewModelProtocol>: UISpl
     public var _viewModel: MvvmViewModelProtocol!
     public var viewModel: ViewModel { _viewModel as! ViewModel }
 
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         delegate = self
@@ -32,11 +32,21 @@ open class MvvmSplitViewController<ViewModel: MvvmSplitViewModelProtocol>: UISpl
             }
             viewControllers.append(viewController)
         } else {
-            viewControllers.append(UINavigationController.safeResolve())
+            viewControllers.append(createEmptyViewController())
         }
     }
 
-    open override func showDetailViewController(_ vc: UIViewController, sender: Any?) {
+    open func createEmptyViewController() -> UIViewController {
+        let vc = UIViewController()
+        if #available(iOS 13.0, *) {
+            vc.view.backgroundColor = .systemBackground
+        } else {
+            vc.view.backgroundColor = .white
+        }
+        return vc
+    }
+
+    override open func showDetailViewController(_ vc: UIViewController, sender: Any?) {
         vc.isSecondary = true
 
         if isCollapsed {
@@ -45,17 +55,21 @@ open class MvvmSplitViewController<ViewModel: MvvmSplitViewModelProtocol>: UISpl
 
             from.show(vc, sender: sender)
         } else {
-            guard viewControllers.count > 0,
-                  let nvc = viewControllers[1] as? UINavigationController
-            else { return }
+            let nvc: UINavigationController
+            if !viewControllers.isEmpty,
+               let tnvc = viewControllers[1] as? UINavigationController
+            { nvc = tnvc }
+            else {
+                nvc = UINavigationController.safeResolve()
+                viewControllers[1] = nvc
+            }
 
             nvc.setViewControllers([vc], animated: false)
         }
     }
 
     public func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
-        if let snvc = secondaryViewController as? UINavigationController
-        {
+        if let snvc = secondaryViewController as? UINavigationController {
             primaryViewController.navigationController?.viewControllers.append(contentsOf: snvc.viewControllers)
         }
         return true
@@ -75,9 +89,13 @@ open class MvvmSplitViewController<ViewModel: MvvmSplitViewModelProtocol>: UISpl
 
         nvc.setViewControllers(firstControllersStack, animated: false)
 
-        let snvc = UINavigationController.safeResolve()
-        snvc.setViewControllers(controllers, animated: false)
-        snvc.setToolbarHidden((controllers.last?.toolbarItems).isNilOrEmpty, animated: false)
-        return snvc
+        if !controllers.isEmpty {
+            let snvc = UINavigationController.safeResolve()
+            snvc.setViewControllers(controllers, animated: false)
+            snvc.setToolbarHidden((controllers.last?.toolbarItems).isNilOrEmpty, animated: false)
+            return snvc
+        } else {
+            return createEmptyViewController()
+        }
     }
 }

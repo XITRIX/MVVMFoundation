@@ -33,6 +33,9 @@ open class MVVM {
     }
 
     open func registerContainer() {
+        // Register Services
+        container.register(type: AlertService.self, factory: { IOSAlertService() })
+
         // Register ViewController Overlays
         container.register { LoadingOverlayViewController() }
         container.register { ErrorOverlayViewController() }

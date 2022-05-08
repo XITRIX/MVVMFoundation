@@ -32,7 +32,14 @@ public extension Router {
         if fvc.isModal {
             fvc.dismiss(animated: true, completion: completion)
         } else {
-            fvc.navigationController?.popToRootViewController(animated: true)
+            if fvc.isSecondary == true,
+               let svc = fvc.splitViewController as? MvvmSplitViewControllerProtocol,
+                !svc.isCollapsed
+            {
+                svc.viewControllers[1] = svc.createEmptyViewController()
+            } else {
+                fvc.navigationController?.popToRootViewController(animated: true)
+            }
         }
     }
 }

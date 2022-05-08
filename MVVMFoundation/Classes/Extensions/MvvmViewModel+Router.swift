@@ -33,7 +33,7 @@ public extension MvvmViewModel {
     }
 
     func dismissToRoot() {
-        dismiss(completion: nil)
+        dismissToRoot(completion: nil)
     }
 
     func dismissToRoot(completion: (() -> ())?) {

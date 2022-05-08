@@ -7,7 +7,11 @@
 
 import UIKit
 
-open class MvvmSplitViewController<ViewModel: MvvmSplitViewModelProtocol>: UISplitViewController, MvvmViewControllerProtocol, UISplitViewControllerDelegate {
+protocol MvvmSplitViewControllerProtocol: UISplitViewController, MvvmViewControllerProtocol, UISplitViewControllerDelegate {
+    func createEmptyViewController() -> UIViewController
+}
+
+open class MvvmSplitViewController<ViewModel: MvvmSplitViewModelProtocol>: UISplitViewController, MvvmSplitViewControllerProtocol {
     public var _viewModel: MvvmViewModelProtocol!
     public var viewModel: ViewModel { _viewModel as! ViewModel }
 

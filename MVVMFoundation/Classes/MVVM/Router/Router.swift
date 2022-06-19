@@ -17,9 +17,28 @@ public class Router {
     private let container: Container
     private var map = [String: Any]()
     private var rootModel: MvvmRootModel?
+    private var rootWindow: UIWindow?
 
     public init(container: Container) {
         self.container = container
+    }
+}
+
+public extension Router {
+    var rootView: UIViewController? {
+        rootWindow?.rootViewController
+    }
+    var topMostView: UIViewController? {
+        var root = rootWindow?.rootViewController
+        while root?.presentedViewController != nil {
+            root = root?.presentedViewController
+        }
+
+        while root?.children.first != nil {
+            root = root?.children.first
+        }
+
+        return root
     }
 }
 
@@ -45,6 +64,7 @@ public extension Router {
         } else {
             window.rootViewController = vc
         }
+        rootWindow = window
     }
 }
 

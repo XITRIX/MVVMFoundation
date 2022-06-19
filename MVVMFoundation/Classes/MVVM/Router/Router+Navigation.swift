@@ -44,10 +44,43 @@ public extension Router {
     }
 }
 
-// MARK: - MvvmViewModel
+// MARK: - Untargeted navigation
+public extension Router {
+    func navigate<TVM: MvvmViewModel>(to targetViewModel: TVM.Type, with type: NavigationType) {
+        guard let fvc = topMostView
+        else { return }
+
+        navigate(from: fvc, to: targetViewModel, with: type)
+    }
+
+    func navigate<M, TVM: MvvmViewModelWith<M>>(to targetViewModel: TVM.Type, prepare model: M, with type: NavigationType) {
+        guard let fvc = topMostView
+        else { return }
+
+        navigate(from: fvc, to: targetViewModel, prepare: model, with: type)
+    }
+}
+
+// MARK: - Targeted navigation
 public extension Router {
     func navigate<FVM: MvvmViewModelProtocol, TVM: MvvmViewModel>(from fromViewModel: FVM, to targetViewModel: TVM.Type, with type: NavigationType) {
         guard let fvc = fromViewModel.attachedView
+        else { return }
+
+        navigate(from: fvc, to: targetViewModel, with: type)
+    }
+
+    func navigate<M, FVM: MvvmViewModelProtocol, TVM: MvvmViewModelWith<M>>(from fromViewModel: FVM, to targetViewModel: TVM.Type, prepare model: M, with type: NavigationType) {
+        guard let fvc = fromViewModel.attachedView
+        else { return }
+
+        navigate(from: fvc, to: targetViewModel, prepare: model, with: type)
+    }
+}
+
+private extension Router {
+    func navigate<TVM: MvvmViewModel>(from controller: UIViewController? = nil, to targetViewModel: TVM.Type, with type: NavigationType) {
+        guard let fvc = controller
         else { return }
 
         let vc = resolve(viewModel: targetViewModel)
@@ -69,8 +102,8 @@ public extension Router {
         }
     }
 
-    func navigate<M, FVM: MvvmViewModelProtocol, TVM: MvvmViewModelWith<M>>(from fromViewModel: FVM, to targetViewModel: TVM.Type, prepare model: M, with type: NavigationType) {
-        guard let fvc = fromViewModel.attachedView
+    func navigate<M, TVM: MvvmViewModelWith<M>>(from controller: UIViewController? = nil, to targetViewModel: TVM.Type, prepare model: M, with type: NavigationType) {
+        guard let fvc = controller
         else { return }
 
         let vc = resolve(viewModel: TVM.self, prepare: model)

@@ -11,9 +11,9 @@ public class Container {
     private var map = [String: HolderProtocol]()
 }
 
-// MARK: - Public
+// MARK: - Register
 public extension Container {
-    // MARK: - Register
+    // MARK: - Multiresolved
     func register<T: Any>(type: T.Type, factory: @escaping () -> T) {
         map[String(describing: type)] = ResolverHolder(factory: factory)
     }
@@ -30,8 +30,10 @@ public extension Container {
     func registerSingleton<T: Any>(factory: @escaping () -> T) {
         map[String(describing: T.self)] = SingletonHolder(factory: factory)
     }
+}
 
-    // MARK: - Resolve
+// MARK: - Resolve
+public extension Container {
     func resolve<T: Any>(type: T.Type) -> T {
         if let obj = map[String(describing: type)]?.getter as? T {
             return obj

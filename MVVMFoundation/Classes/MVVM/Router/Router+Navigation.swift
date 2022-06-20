@@ -79,48 +79,30 @@ public extension Router {
 }
 
 private extension Router {
-    func navigate<TVM: MvvmViewModel>(from controller: UIViewController? = nil, to targetViewModel: TVM.Type, with type: NavigationType) {
-        guard let fvc = controller
-        else { return }
-
+    func navigate<TVM: MvvmViewModel>(from controller: UIViewController, to targetViewModel: TVM.Type, with type: NavigationType) {
         let vc = resolve(viewModel: targetViewModel)
-
-        switch type {
-        case .push:
-            fvc.show(vc, sender: fvc)
-        case .detail:
-            vc.isSecondary = true
-            fvc.showDetailViewController(vc, sender: fvc)
-        case .modal(let wrapInNavigation):
-            if wrapInNavigation {
-                let nvc = UINavigationController.safeResolve()
-                nvc.viewControllers = [vc]
-                fvc.present(nvc, animated: true)
-            } else {
-                fvc.present(vc, animated: true)
-            }
-        }
+        navigate(from: controller, to: vc, with: type)
     }
 
-    func navigate<M, TVM: MvvmViewModelWith<M>>(from controller: UIViewController? = nil, to targetViewModel: TVM.Type, prepare model: M, with type: NavigationType) {
-        guard let fvc = controller
-        else { return }
-
+    func navigate<M, TVM: MvvmViewModelWith<M>>(from controller: UIViewController, to targetViewModel: TVM.Type, prepare model: M, with type: NavigationType) {
         let vc = resolve(viewModel: TVM.self, prepare: model)
+        navigate(from: controller, to: vc, with: type)
+    }
 
+    func navigate(from controller: UIViewController, to targetController: UIViewController, with type: NavigationType) {
         switch type {
         case .push:
-            fvc.show(vc, sender: fvc)
+            controller.show(targetController, sender: controller)
         case .detail:
-            vc.isSecondary = true
-            fvc.showDetailViewController(vc, sender: fvc)
+            targetController.isSecondary = true
+            controller.showDetailViewController(targetController, sender: controller)
         case .modal(let wrapInNavigation):
             if wrapInNavigation {
                 let nvc = UINavigationController.safeResolve()
-                nvc.viewControllers = [vc]
-                fvc.present(nvc, animated: true)
+                nvc.viewControllers = [targetController]
+                controller.present(nvc, animated: true)
             } else {
-                fvc.present(vc, animated: true)
+                controller.present(targetController, animated: true)
             }
         }
     }

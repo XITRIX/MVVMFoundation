@@ -19,9 +19,11 @@ open class MvvmViewController<ViewModel: MvvmViewModelProtocol>: UIViewControlle
     public required init(viewModel: ViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        self.viewModel.navigationService = self
+        self.viewModel.setNavigationService(self)
 
-        viewModel.title.bind(to: rx.title).disposed(by: disposeBag)
+        bind(in: disposeBag) {
+            rx.title <- viewModel.title
+        }
     }
 
     @available(*, unavailable)
@@ -40,8 +42,8 @@ open class MvvmViewController<ViewModel: MvvmViewModelProtocol>: UIViewControlle
     }
 }
 
-internal extension MvvmViewController {
-    class var classNameWithoutGenericType: String {
+internal extension MvvmViewControllerProtocol {
+    static var classNameWithoutGenericType: String {
         return "\(Self.self)".replacingOccurrences(of: "<\(ViewModel.self)>", with: "")
     }
 }

@@ -12,3 +12,4 @@ public protocol MvvmViewCellProtocol: MvvmViewProtocol {
 }
 
 public protocol MvvmTableViewCellProtocol: MvvmViewCellProtocol, UITableViewCell {}
+public protocol MvvmCollectionViewCellProtocol: MvvmViewCellProtocol, UICollectionViewCell {}

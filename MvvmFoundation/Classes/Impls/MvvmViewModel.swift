@@ -23,11 +23,19 @@ open class MvvmViewModel: MvvmViewModelProtocol {
     open func willAppear() {}
     open func willDisappear() {}
 
-    public static func == (lhs: MvvmViewModel, rhs: MvvmViewModel) -> Bool {
-        lhs.uuid == rhs.uuid
+    public func setNavigationService(_ navigationService: NavigationProtocol) {
+        self.navigationService = navigationService
     }
 
-    public func hash(into hasher: inout Hasher) {
+    public static func == (lhs: MvvmViewModel, rhs: MvvmViewModel) -> Bool {
+        lhs.isEqual(to: rhs)
+    }
+
+    open func hash(into hasher: inout Hasher) {
         hasher.combine(uuid)
+    }
+
+    open func isEqual(to other: MvvmViewModel) -> Bool {
+        uuid == other.uuid
     }
 }

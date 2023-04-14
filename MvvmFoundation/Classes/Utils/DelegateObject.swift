@@ -8,7 +8,7 @@
 import Foundation
 
 open class DelegateObject<Parent: AnyObject>: NSObject {
-    private(set) weak var parent: Parent!
+    public private(set) weak var parent: Parent!
 
     public init(parent: Parent) {
         self.parent = parent

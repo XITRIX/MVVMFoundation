@@ -12,6 +12,10 @@ public extension MvvmViewModelProtocol {
     static func resolveVC() -> UIViewController {
         Mvvm.shared.router.resolve(Self.init())
     }
+
+    func resolveVC() -> UIViewController {
+        Mvvm.shared.router.resolve(self)
+    }
 }
 
 public extension MvvmViewModelWithProtocol {
@@ -26,5 +30,12 @@ public extension MvvmViewModelWithProtocol {
 public extension MvvmViewModelProtocol {
     func resolveCell(from tableView: UITableView) -> UITableViewCell {
         Mvvm.shared.router.resolve(self, from: tableView)
+    }
+}
+
+// MARK: - CollectionViewCell
+public extension MvvmViewModelProtocol {
+    func resolveCell(from collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
+        Mvvm.shared.router.resolve(self, from: collectionView, at: indexPath)
     }
 }

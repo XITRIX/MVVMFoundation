@@ -22,6 +22,11 @@ public extension Container {
     func registerSingleton<T: Any>(type: T.Type = T.self, factory: @escaping () -> T) {
         map[String(describing: type)] = SingletonHolder(factory: factory)
     }
+
+    // MARK: - Weak
+    func registerWeak<T: AnyObject>(type: T.Type = T.self, factory: @escaping () -> T) {
+        map[String(describing: type)] = WeakHolder(factory: factory)
+    }
 }
 
 // MARK: - Safe Resolve

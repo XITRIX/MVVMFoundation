@@ -9,11 +9,13 @@ import Foundation
 import RxRelay
 import RxSwift
 
-public protocol MvvmViewModelProtocol: AnyObject, Hashable {
+public protocol MvvmViewModelProtocol: Hashable {
     var title: BehaviorRelay<String?> { get }
-    var navigationService: NavigationProtocol! { get set }
+    var navigationService: NavigationProtocol! { get }
     init()
 
     func willAppear()
     func willDisappear()
+
+    func setNavigationService(_ navigationService: NavigationProtocol)
 }

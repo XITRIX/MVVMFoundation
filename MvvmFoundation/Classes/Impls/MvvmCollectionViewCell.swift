@@ -1,40 +1,41 @@
 //
-//  MvvmTableViewCell.swift
-//  MvvmWorkshop
+//  MvvmCollectionViewCell.swift
+//  MvvmFoundation
 //
-//  Created by Даниил Виноградов on 16.03.2023.
+//  Created by Даниил Виноградов on 07.04.2023.
 //
 
 import RxSwift
 import UIKit
 
-public struct MvvmCellViewModelWrapper<ViewModel: MvvmViewModelProtocol>: Hashable {
-    public let viewModel: ViewModel
-
-    public init(viewModel: ViewModel) {
-        self.viewModel = viewModel
-    }
-}
-
-open class MvvmTableViewCell<ViewModel: MvvmViewModelProtocol>: UITableViewCell, MvvmTableViewCellProtocol {
+open class MvvmCollectionViewCell<ViewModel: MvvmViewModelProtocol>: UICollectionViewCell, MvvmCollectionViewCellProtocol {
     public private(set) var disposeBag = DisposeBag()
 
     public override class var reusableId: String { classNameWithoutGenericType }
 
-    override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    public init() {
+        super.init(frame: .zero)
         commonInit()
+        initSetup()
+    }
+
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        commonInit()
+        initSetup()
     }
 
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
         commonInit()
+        initSetup()
     }
 
     private func commonInit() {
         guard Bundle.main.path(forResource: Self.classNameWithoutGenericType, ofType: "nib") != nil
         else { return }
 
+        contentView.preservesSuperviewLayoutMargins = true
         let nib = Bundle.main.loadNibNamed(Self.classNameWithoutGenericType, owner: self)
         if let view = nib?.first as? UIView {
             view.translatesAutoresizingMaskIntoConstraints = false
@@ -51,6 +52,8 @@ open class MvvmTableViewCell<ViewModel: MvvmViewModelProtocol>: UITableViewCell,
         }
     }
 
+    open func initSetup() {}
+
     open func setup(with viewModel: ViewModel) {}
 
     override public func prepareForReuse() {
@@ -63,7 +66,7 @@ open class MvvmTableViewCell<ViewModel: MvvmViewModelProtocol>: UITableViewCell,
     }
 }
 
-internal extension MvvmTableViewCell {
+internal extension MvvmCollectionViewCell {
     class var classNameWithoutGenericType: String {
         return "\(Self.self)".replacingOccurrences(of: "<\(ViewModel.self)>", with: "")
     }

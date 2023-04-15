@@ -20,8 +20,7 @@ public extension MvvmViewModelProtocol {
 
 public extension MvvmViewModelWithProtocol {
     static func resolveVC(with model: Model) -> UIViewController {
-        let vm = Self.init()
-        vm.prepare(with: model)
+        let vm = Self.init(with: model)
         return Mvvm.shared.router.resolve(vm)
     }
 }

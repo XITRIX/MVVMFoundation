@@ -11,3 +11,10 @@ public protocol MvvmViewModelWithProtocol: MvvmViewModelProtocol {
     associatedtype Model
     func prepare(with model: Model)
 }
+
+extension MvvmViewModelWithProtocol {
+    public init(with model: Model) {
+        self.init()
+        prepare(with: model)
+    }
+}

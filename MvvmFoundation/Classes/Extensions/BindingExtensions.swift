@@ -57,11 +57,11 @@ public func <- <L: ObserverType, R: ObservableType>(left: L, right: R) -> Dispos
     right.bind(to: left)
 }
 
-public func <- <L, R: ObservableType>(left: @escaping (L) -> (), right: R) -> Disposable
+public func <- <L, R: ObservableType>(left: @escaping @MainActor (L) -> (), right: R) -> Disposable
     where R.Element == L
 {
     right.bind { value in
-        left(value)
+        Task { await left(value) }
     }
 }
 

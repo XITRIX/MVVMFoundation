@@ -16,25 +16,33 @@ open class MvvmViewModel: MvvmViewModelProtocol {
     public var title = BehaviorRelay<String?>(value: nil)
     public weak var navigationService: NavigationProtocol!
     public required init() {
-        binding()
+        Task { await binding() }
     }
+
+    @MainActor
     open func binding() {}
 
+    @MainActor
     open func willAppear() {}
+
+    @MainActor
     open func willDisappear() {}
 
     public func setNavigationService(_ navigationService: NavigationProtocol) {
         self.navigationService = navigationService
     }
 
+    @MainActor
     public static func == (lhs: MvvmViewModel, rhs: MvvmViewModel) -> Bool {
         lhs.isEqual(to: rhs)
     }
 
+    @MainActor
     open func hash(into hasher: inout Hasher) {
         hasher.combine(uuid)
     }
 
+    @MainActor
     open func isEqual(to other: MvvmViewModel) -> Bool {
         uuid == other.uuid
     }

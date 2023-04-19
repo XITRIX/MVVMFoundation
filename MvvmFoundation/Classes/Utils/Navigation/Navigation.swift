@@ -15,9 +15,14 @@ public enum NavigationType {
 
 public protocol NavigationProtocol: UIViewController {
     func navigate(to navigationProtocol: any NavigationProtocol, by type: NavigationType)
+    func dismiss()
 }
 
 extension UIViewController: NavigationProtocol {
+    public func dismiss() {
+        dismiss(animated: true)
+    }
+
     public func navigate(to navigationProtocol: any NavigationProtocol, by type: NavigationType) {
         switch type {
         case .show:
@@ -46,5 +51,9 @@ public extension MvvmViewModelProtocol {
     func navigate<Model, VM: MvvmViewModelWithProtocol>(to viewModel: VM.Type, with model: Model, by type: NavigationType) where VM.Model == Model {
         let vc = viewModel.resolveVC(with: model)
         navigationService.navigate(to: vc, by: type)
+    }
+
+    func dismiss() {
+        navigationService.dismiss()
     }
 }

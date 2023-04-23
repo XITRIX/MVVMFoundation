@@ -87,3 +87,7 @@ public func <- <T>(left: @escaping (T) -> (), right: ControlEvent<T>) -> Disposa
         left(item)
     }
 }
+
+public func <- <T>(left: PublishRelay<T>, right: ControlEvent<T>) -> Disposable {
+    right.bind(to: left)
+}

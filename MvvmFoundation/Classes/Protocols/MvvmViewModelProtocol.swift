@@ -9,7 +9,7 @@ import Foundation
 import RxRelay
 import RxSwift
 
-public protocol MvvmViewModelProtocol: Hashable {
+public protocol MvvmViewModelProtocol: MvvmAssociatedObjectHolderProtocol, Hashable {
     var title: BehaviorRelay<String?> { get }
     var navigationService: NavigationProtocol! { get }
     init()

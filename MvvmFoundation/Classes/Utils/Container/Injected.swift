@@ -9,6 +9,10 @@ import Foundation
 
 @propertyWrapper
 public struct Injected<T> {
-    public init() {}
-    public let wrappedValue = Mvvm.shared.container.resolve() as T
+    let key: ContainerKey?
+    public init(key: ContainerKey? = nil) {
+        self.key = key
+    }
+
+    public lazy var wrappedValue = Mvvm.shared.container.resolve(key: key) as T
 }

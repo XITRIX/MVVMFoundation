@@ -7,6 +7,24 @@
 
 import Foundation
 
+public struct ContainerKey {
+    let key: String
+    let isDefault: Bool
+
+    public init(key: String, isDefault: Bool = false) {
+        self.key = key
+        self.isDefault = isDefault
+    }
+
+    internal var value: String {
+        isDefault ? "" : key
+    }
+}
+
+public extension ContainerKey {
+    static var `default`: ContainerKey {.init(key: "default") }
+}
+
 public class Container {
     private var map = [String: HolderProtocol]()
 }
@@ -14,32 +32,32 @@ public class Container {
 // MARK: - Register
 public extension Container {
     // MARK: - Multiresolved
-    func register<T: Any>(type: T.Type = T.self, factory: @escaping () -> T) {
-        map[String(describing: type)] = ResolverHolder(factory: factory)
+    func register<T: Any>(type: T.Type = T.self, key: ContainerKey? = nil, factory: @escaping () -> T) {
+        map[String(describing: type) + (key?.value ?? "")] = ResolverHolder(factory: factory)
     }
 
     // MARK: - Singleton
-    func registerSingleton<T: Any>(type: T.Type = T.self, factory: @escaping () -> T) {
-        map[String(describing: type)] = SingletonHolder(factory: factory)
+    func registerSingleton<T: Any>(type: T.Type = T.self, key: ContainerKey? = nil, factory: @escaping () -> T) {
+        map[String(describing: type) + (key?.value ?? "")] = SingletonHolder(factory: factory)
     }
 
     // MARK: - Weak
-    func registerWeak<T: AnyObject>(type: T.Type = T.self, factory: @escaping () -> T) {
-        map[String(describing: type)] = WeakHolder(factory: factory)
+    func registerWeak<T: AnyObject>(type: T.Type = T.self, key: ContainerKey? = nil, factory: @escaping () -> T) {
+        map[String(describing: type) + (key?.value ?? "")] = WeakHolder(factory: factory)
     }
 }
 
 // MARK: - Safe Resolve
 public extension Container {
-    func safeResolve<T: Any>(type: T.Type = T.self) -> T? {
-        guard let obj = safeResolve(id: String(describing: type)) as T?
+    func safeResolve<T: Any>(type: T.Type = T.self, key: ContainerKey? = nil) -> T? {
+        guard let obj = safeResolve(id: String(describing: type), key: key) as T?
         else { return nil }
 
         return obj
     }
 
-    func safeResolve<T: Any>(id: String) -> T? {
-        guard let obj = map[id]?.getter as? T
+    func safeResolve<T: Any>(id: String, key: ContainerKey? = nil) -> T? {
+        guard let obj = map[id + (key?.value ?? "")]?.getter as? T
         else { return nil }
 
         return obj
@@ -48,12 +66,12 @@ public extension Container {
 
 // MARK: - Resolve
 public extension Container {
-    func resolve<T: Any>(type: T.Type = T.self) -> T {
-        resolve(id: String(describing: type)) as T
+    func resolve<T: Any>(type: T.Type = T.self, key: ContainerKey? = nil) -> T {
+        resolve(id: String(describing: type), key: key) as T
     }
 
-    func resolve<T: Any>(id: String) -> T {
-        guard let obj = safeResolve(id: id) as T?
+    func resolve<T: Any>(id: String, key: ContainerKey? = nil) -> T {
+        guard let obj = safeResolve(id: id, key: key) as T?
         else { fatalError("\(T.self) is not registered") }
 
         return obj

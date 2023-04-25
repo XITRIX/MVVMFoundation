@@ -45,11 +45,12 @@ extension UIViewController: NavigationProtocol {
 
 public extension MvvmViewModelProtocol {
     func navigate<VM: MvvmViewModelProtocol>(to viewModel: VM.Type, by type: NavigationType) {
-        navigationService.navigate(to: viewModel.resolveVC(), by: type)
+        let vc = viewModel.init().setParent(self).resolveVC()
+        navigationService.navigate(to: vc, by: type)
     }
 
     func navigate<Model, VM: MvvmViewModelWithProtocol>(to viewModel: VM.Type, with model: Model, by type: NavigationType) where VM.Model == Model {
-        let vc = viewModel.resolveVC(with: model)
+        let vc = viewModel.init(with: model).setParent(self).resolveVC()
         navigationService.navigate(to: vc, by: type)
     }
 

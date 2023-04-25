@@ -11,12 +11,18 @@ import RxSwift
 
 open class MvvmViewModel: MvvmViewModelProtocol {
     private let uuid = UUID()
+    public var parent: (any MvvmViewModelProtocol)?
 
     public let disposeBag = DisposeBag()
     public var title = BehaviorRelay<String?>(value: nil)
     public weak var navigationService: NavigationProtocol!
     public required init() {
         Task { await binding() }
+    }
+
+    public func setParent(_ parent: (any MvvmViewModelProtocol)?) -> Self {
+        self.parent = parent
+        return self
     }
 
     @MainActor

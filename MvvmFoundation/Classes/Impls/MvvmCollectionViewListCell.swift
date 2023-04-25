@@ -11,6 +11,7 @@ import UIKit
 @available(iOS 14.0, *)
 open class MvvmCollectionViewListCell<ViewModel: MvvmViewModelProtocol>: UICollectionViewListCell, MvvmCollectionViewCellProtocol {
     public private(set) var disposeBag = DisposeBag()
+    private(set) public var viewModel: ViewModel!
 
     public override class var reusableId: String { classNameWithoutGenericType }
 
@@ -64,6 +65,10 @@ open class MvvmCollectionViewListCell<ViewModel: MvvmViewModelProtocol>: UIColle
 
     public func resetBundings() {
         disposeBag = DisposeBag()
+    }
+
+    public func setViewModel(_ viewModel: ViewModel) {
+        self.viewModel = viewModel
     }
 }
 

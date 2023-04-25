@@ -56,7 +56,10 @@ public extension Router {
                 tableView.register(type: V.self, hasXib: false)
                 cell = getCell() as? V
             }
-            cell?.setup(with: viewModel)
+            if let cell {
+                cell.setViewModel(viewModel)
+                cell.setup(with: viewModel)
+            }
             return cell as Any
         }
     }
@@ -92,7 +95,10 @@ public extension Router {
 
             let getCell = { collectionView.dequeueReusableCell(withReuseIdentifier: V.reusableId, for: indexPath) }
             let cell = getCell() as? V
-            cell?.setup(with: viewModel)
+            if let cell {
+                cell.setViewModel(viewModel)
+                cell.setup(with: viewModel)
+            }
             return cell as Any
         }
     }

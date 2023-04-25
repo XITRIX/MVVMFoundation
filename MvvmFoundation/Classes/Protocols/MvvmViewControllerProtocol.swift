@@ -8,6 +8,6 @@
 import UIKit
 
 public protocol MvvmViewControllerProtocol: MvvmViewProtocol, UIViewController {
-    var viewModel: ViewModel { get }
+    var viewModel: ViewModel! { get }
     init(viewModel: ViewModel)
 }

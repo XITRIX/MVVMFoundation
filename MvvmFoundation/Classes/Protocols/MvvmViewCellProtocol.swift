@@ -9,6 +9,7 @@ import UIKit
 
 public protocol MvvmViewCellProtocol: MvvmViewProtocol {
     func setup(with viewModel: ViewModel)
+    func setViewModel(_ viewModel: ViewModel)
 }
 
 public protocol MvvmTableViewCellProtocol: MvvmViewCellProtocol, UITableViewCell {}

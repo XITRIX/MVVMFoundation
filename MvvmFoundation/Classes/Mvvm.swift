@@ -7,7 +7,7 @@
 
 import UIKit
 
-class Mvvm {
+public class Mvvm {
     public static var shared = Mvvm()
 
     public let container = Container()

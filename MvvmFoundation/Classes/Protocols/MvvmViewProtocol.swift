@@ -7,6 +7,7 @@
 
 import Foundation
 
-public protocol MvvmViewProtocol {
+public protocol MvvmViewProtocol: AnyObject {
     associatedtype ViewModel: MvvmViewModelProtocol
+    var viewModel: ViewModel! { get }
 }

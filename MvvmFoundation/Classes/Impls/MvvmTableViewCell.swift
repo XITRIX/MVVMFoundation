@@ -9,7 +9,7 @@ import RxSwift
 import UIKit
 
 public struct MvvmCellViewModelWrapper<ViewModel: MvvmViewModelProtocol>: Hashable {
-    public let viewModel: ViewModel
+    public let viewModel: ViewModel!
 
     public init(viewModel: ViewModel) {
         self.viewModel = viewModel
@@ -18,6 +18,7 @@ public struct MvvmCellViewModelWrapper<ViewModel: MvvmViewModelProtocol>: Hashab
 
 open class MvvmTableViewCell<ViewModel: MvvmViewModelProtocol>: UITableViewCell, MvvmTableViewCellProtocol {
     public private(set) var disposeBag = DisposeBag()
+    private(set) public var viewModel: ViewModel!
 
     public override class var reusableId: String { classNameWithoutGenericType }
 
@@ -60,6 +61,10 @@ open class MvvmTableViewCell<ViewModel: MvvmViewModelProtocol>: UITableViewCell,
 
     public func resetBundings() {
         disposeBag = DisposeBag()
+    }
+
+    public func setViewModel(_ viewModel: ViewModel) {
+        self.viewModel = viewModel
     }
 }
 

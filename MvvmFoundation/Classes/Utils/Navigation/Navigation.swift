@@ -13,6 +13,7 @@ public enum NavigationType {
     case detail
 }
 
+@MainActor
 public protocol NavigationProtocol: UIViewController {
     func navigate(to navigationProtocol: any NavigationProtocol, by type: NavigationType)
     func dismiss()
@@ -20,6 +21,11 @@ public protocol NavigationProtocol: UIViewController {
 
 extension UIViewController: NavigationProtocol {
     public func dismiss() {
+        if let navigationController,
+           navigationController.viewControllers.count > 1
+        {
+            navigationController.popViewController(animated: true)
+        }
         dismiss(animated: true)
     }
 
@@ -43,6 +49,7 @@ extension UIViewController: NavigationProtocol {
     }
 }
 
+@MainActor
 public extension MvvmViewModelProtocol {
     func navigate<VM: MvvmViewModelProtocol>(to viewModel: VM.Type, by type: NavigationType) {
         let vc = viewModel.init().setParent(self).resolveVC()

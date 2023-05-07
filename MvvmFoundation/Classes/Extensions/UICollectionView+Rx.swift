@@ -16,8 +16,9 @@ extension Reactive where Base: UICollectionView {
 
             guard let collectionView else { return Observable.empty().startWith(selectedItems ?? []) }
 
-            let selectedItemsChanged = Observable.combineLatest(collectionView.rx.itemSelected, collectionView.rx.itemDeselected)
-                .map { _, _ in base.indexPathsForSelectedItems ?? [] }
+            let selectedItemsChanged = Observable.of(collectionView.rx.itemSelected, collectionView.rx.itemDeselected)
+                .merge()
+                .map { _ in base.indexPathsForSelectedItems ?? [] }
 
             return selectedItemsChanged
                 .startWith(selectedItems ?? [])
@@ -25,7 +26,7 @@ extension Reactive where Base: UICollectionView {
 
         let bindingObserver = Binder(self.base) { (collectionView, items: [IndexPath]) in
             collectionView.indexPathsForSelectedItems?.forEach { collectionView.deselectItem(at: $0, animated: true) }
-            items.forEach { collectionView.selectItem(at: $0, animated: true, scrollPosition: .left) }
+            items.forEach { collectionView.selectItem(at: $0, animated: true, scrollPosition: []) }
         }
 
         return ControlProperty(values: source, valueSink: bindingObserver)

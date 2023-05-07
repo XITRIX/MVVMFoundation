@@ -14,7 +14,7 @@ open class MvvmViewModel: MvvmViewModelProtocol {
     public var parent: (any MvvmViewModelProtocol)?
 
     public let disposeBag = DisposeBag()
-    public var title = BehaviorRelay<String?>(value: nil)
+    public let title = BehaviorRelay<String?>(value: nil)
     public weak var navigationService: NavigationProtocol!
     public required init() {
         Task { await binding() }

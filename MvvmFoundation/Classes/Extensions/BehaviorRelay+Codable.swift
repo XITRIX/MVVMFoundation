@@ -18,3 +18,15 @@ extension BehaviorRelay: Codable where Element: Codable {
         self.init(value: try container.decode(Element.self))
     }
 }
+
+public extension BehaviorRelay where Element == Void {
+    func accept() {
+        self.accept(())
+    }
+}
+
+public extension PublishRelay where Element == Void {
+    func accept() {
+        self.accept(())
+    }
+}

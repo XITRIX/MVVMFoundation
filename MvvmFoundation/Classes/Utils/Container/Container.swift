@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ContainerKey {
+public struct ContainerKey: Codable {
     let key: String
     let isDefault: Bool
 

@@ -19,6 +19,14 @@ public enum BindingContext {
     public static func buildArray(_ components: [[Disposable]]) -> [Disposable] {
         components.flatMap { $0 }
     }
+
+    public static func buildEither(first component: [Disposable]) -> [Disposable] {
+        component
+    }
+
+    public static func buildEither(second component: [Disposable]) -> [Disposable] {
+        component
+    }
 }
 
 public func bind(in disposeBag: DisposeBag, @BindingContext block: () -> [Disposable]) {

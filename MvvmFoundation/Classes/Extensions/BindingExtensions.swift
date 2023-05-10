@@ -33,7 +33,7 @@ public func <- <L: ObserverType, R: ObservableType>(left: L, right: R) -> Dispos
 }
 
 @available(iOS 13.0, *)
-public func <- <L, R: ObservableType>(left: Binding<L>, right: R) -> Disposable
+public func <- <L, R: ObservableType>(left: SwiftUI.Binding<L>, right: R) -> Disposable
     where R.Element == L
 {
     right.bind { value in
@@ -74,7 +74,7 @@ public func <- <L, R: ObservableType>(left: @escaping (L?) -> (), right: R) -> D
 }
 
 @available(iOS 13.0, *)
-public func <- <L, R: ObservableType>(left: Binding<L?>, right: R) -> Disposable
+public func <- <L, R: ObservableType>(left: SwiftUI.Binding<L?>, right: R) -> Disposable
     where R.Element == L
 {
     right.bind { value in

@@ -19,6 +19,9 @@ open class MvvmCollectionViewLayout: UICollectionViewCompositionalLayout {
             }
             configuration.showsSeparators = sectionModel.showsSeparators
             configuration.headerMode = sectionModel.header.isNilOrEmpty ? .none : .supplementary
+            configuration.trailingSwipeActionsConfigurationProvider = { indexPath in
+                dataSource.trailingSwipeActionsConfigurationProvider?(indexPath) ?? .init(actions: [])
+            }
 
             let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: env)
             return section

@@ -12,6 +12,8 @@ import RxSwift
 open class MvvmCollectionViewDataSource: UICollectionViewDiffableDataSource<MvvmCollectionSectionModel, MvvmCellViewModelWrapper<MvvmViewModel>> {
     private let collectionView: UICollectionView
 
+    public var trailingSwipeActionsConfigurationProvider: UICollectionLayoutListConfiguration.SwipeActionsConfigurationProvider?
+
     public var modelSelected: Observable<MvvmViewModel> {
         collectionView.rx.itemSelected.map { [unowned self] indexPath in
             snapshot().sectionIdentifiers[indexPath.section].items[indexPath.item]

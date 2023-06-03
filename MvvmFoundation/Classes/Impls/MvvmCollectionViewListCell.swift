@@ -12,6 +12,7 @@ import UIKit
 open class MvvmCollectionViewListCell<ViewModel: MvvmViewModelProtocol>: UICollectionViewListCell, MvvmCollectionViewCellProtocol {
     public private(set) var disposeBag = DisposeBag()
     private(set) public var viewModel: ViewModel!
+    open var attachCellToContentView: Bool { true }
 
     public override class var reusableId: String { classNameWithoutGenericType }
 
@@ -40,16 +41,18 @@ open class MvvmCollectionViewListCell<ViewModel: MvvmViewModelProtocol>: UIColle
         contentView.preservesSuperviewLayoutMargins = true
         let nib = Bundle.main.loadNibNamed(Self.classNameWithoutGenericType, owner: self)
         if let view = nib?.first as? UIView {
+            let targetContainer = attachCellToContentView ? contentView : self
+
             view.translatesAutoresizingMaskIntoConstraints = false
             view.preservesSuperviewLayoutMargins = true
             view.backgroundColor = .clear
-            contentView.addSubview(view)
+            targetContainer.addSubview(view)
 
             NSLayoutConstraint.activate([
-                view.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-                view.topAnchor.constraint(equalTo: contentView.topAnchor),
-                contentView.rightAnchor.constraint(equalTo: view.rightAnchor),
-                contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                view.leftAnchor.constraint(equalTo: targetContainer.leftAnchor),
+                view.topAnchor.constraint(equalTo: targetContainer.topAnchor),
+                targetContainer.rightAnchor.constraint(equalTo: view.rightAnchor),
+                targetContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
         }
     }

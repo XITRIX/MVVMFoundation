@@ -59,6 +59,9 @@ public extension Router {
             if let cell {
                 cell.setViewModel(viewModel)
                 cell.setup(with: viewModel)
+                if let navService = cell.viewController {
+                    viewModel.setNavigationService(navService)
+                }
             }
             return cell as Any
         }
@@ -98,6 +101,9 @@ public extension Router {
             if let cell {
                 cell.setViewModel(viewModel)
                 cell.setup(with: viewModel)
+                if let navService = cell.viewController {
+                    viewModel.setNavigationService(navService)
+                }
             }
             return cell as Any
         }

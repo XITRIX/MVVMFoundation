@@ -39,9 +39,19 @@ open class MvvmTabBarController<ViewModel: MvvmTabBarViewModelProtocol>: UITabBa
         viewModel.willAppear()
     }
 
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        viewModel.didAppear()
+    }
+
     override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         viewModel.willDisappear()
+    }
+
+    open override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.didDisappear()
     }
 }
 

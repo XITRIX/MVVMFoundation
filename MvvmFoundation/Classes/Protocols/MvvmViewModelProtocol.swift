@@ -17,7 +17,9 @@ public protocol MvvmViewModelProtocol: MvvmAssociatedObjectHolderProtocol, Hasha
     init()
 
     func willAppear()
+    func didAppear()
     func willDisappear()
+    func didDisappear()
 
     func setNavigationService(_ navigationService: NavigationProtocol)
     func setParent(_ parent: (any MvvmViewModelProtocol)?) -> Self

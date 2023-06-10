@@ -32,7 +32,13 @@ open class MvvmViewModel: MvvmViewModelProtocol {
     open func willAppear() {}
 
     @MainActor
+    open func didAppear() {}
+
+    @MainActor
     open func willDisappear() {}
+
+    @MainActor
+    open func didDisappear() {}
 
     public func setNavigationService(_ navigationService: NavigationProtocol) {
         self.navigationService = navigationService

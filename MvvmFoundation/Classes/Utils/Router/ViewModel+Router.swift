@@ -34,7 +34,7 @@ public extension MvvmViewModelProtocol {
 
 // MARK: - CollectionViewCell
 public extension MvvmViewModelProtocol {
-    func resolveCell(from collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
-        Mvvm.shared.router.resolve(self, from: collectionView, at: indexPath)
+    func resolveCell(from collectionView: UICollectionView, at indexPath: IndexPath, with supplementaryKind: String? = nil) -> UICollectionViewCell {
+        Mvvm.shared.router.resolve(self, from: collectionView, at: indexPath, with: supplementaryKind)
     }
 }

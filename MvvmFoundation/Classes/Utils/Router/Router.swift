@@ -92,11 +92,21 @@ public extension Router {
         where V.ViewModel == VM
     {
         storage[String(describing: VM.self)] = { model in
-            let (collectionView, viewModel, indexPath) = model as! (UICollectionView, VM, IndexPath)
+            let (collectionView, viewModel, indexPath, supplementaryKind) = model as! (UICollectionView, VM, IndexPath, String?)
 
-            collectionView.register(type: V.self, hasXib: false)
+            if let supplementaryKind {
+                collectionView.register(V.self, forSupplementaryViewOfKind: supplementaryKind, withReuseIdentifier: V.reusableId)
+            } else {
+                collectionView.register(type: V.self, hasXib: false)
+            }
 
-            let getCell = { collectionView.dequeueReusableCell(withReuseIdentifier: V.reusableId, for: indexPath) }
+            let getCell = {
+                if let supplementaryKind {
+                    return collectionView.dequeueReusableSupplementaryView(ofKind: supplementaryKind, withReuseIdentifier: V.reusableId, for: indexPath)
+                } else {
+                    return collectionView.dequeueReusableCell(withReuseIdentifier: V.reusableId, for: indexPath)
+                }
+            }
             let cell = getCell() as? V
             if let cell {
                 cell.setViewModel(viewModel)
@@ -112,15 +122,15 @@ public extension Router {
 
 // MARK: - Safe Resolve TableViewCell
 public extension Router {
-    func safeResolve<VM: MvvmViewModelProtocol>(_ viewModel: VM, from tableView: UICollectionView, at indexPath: IndexPath) -> (any MvvmCollectionViewCellProtocol)? {
-        storage[String(describing: type(of: viewModel))]?((tableView, viewModel, indexPath)) as? any MvvmCollectionViewCellProtocol
+    func safeResolve<VM: MvvmViewModelProtocol>(_ viewModel: VM, from tableView: UICollectionView, at indexPath: IndexPath, with supplementaryKind: String? = nil) -> (any MvvmCollectionViewCellProtocol)? {
+        storage[String(describing: type(of: viewModel))]?((tableView, viewModel, indexPath, supplementaryKind)) as? any MvvmCollectionViewCellProtocol
     }
 }
 
 // MARK: - Resolve TableViewCell
 public extension Router {
-    func resolve<VM: MvvmViewModelProtocol>(_ viewModel: VM, from tableView: UICollectionView, at indexPath: IndexPath) -> any MvvmCollectionViewCellProtocol {
-        guard let cell = safeResolve(viewModel, from: tableView, at: indexPath)
+    func resolve<VM: MvvmViewModelProtocol>(_ viewModel: VM, from tableView: UICollectionView, at indexPath: IndexPath, with supplementaryKind: String? = nil) -> any MvvmCollectionViewCellProtocol {
+        guard let cell = safeResolve(viewModel, from: tableView, at: indexPath, with: supplementaryKind)
         else { fatalError("Could not resolve \(String(describing: type(of: viewModel))). Register it first") }
         return cell
     }

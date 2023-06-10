@@ -12,6 +12,8 @@ public struct MvvmCollectionSectionModel: Hashable {
         case plain
         case grouped
         case insetGrouped
+        case sidebar
+        case sidebarPlain
     }
 
     public let id: String

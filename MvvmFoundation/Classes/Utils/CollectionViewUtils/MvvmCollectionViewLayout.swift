@@ -44,6 +44,10 @@ public extension MvvmCollectionSectionModel.Style {
             return .grouped
         case .insetGrouped:
             return .insetGrouped
+        case .sidebar:
+            return .sidebar
+        case .sidebarPlain:
+            return .sidebarPlain
         }
     }
 }

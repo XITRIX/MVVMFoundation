@@ -11,6 +11,7 @@ public enum NavigationType {
     case show
     case present(wrapInNavigation: Bool)
     case detail
+    case custom(transaction: (_ from: UIViewController, _ to: UIViewController) -> Void)
 }
 
 @MainActor
@@ -45,6 +46,8 @@ extension UIViewController: NavigationProtocol {
             present(vc, animated: true)
         case .detail:
             showDetailViewController(navigationProtocol, sender: self)
+        case .custom(let transaction):
+            transaction(self, navigationProtocol)
         }
     }
 }

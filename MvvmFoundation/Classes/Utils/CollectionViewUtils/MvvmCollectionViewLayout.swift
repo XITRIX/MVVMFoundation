@@ -9,7 +9,7 @@ import UIKit
 
 @available(iOS 14.0, *)
 open class MvvmCollectionViewLayout: UICollectionViewCompositionalLayout {
-    public init(_ dataSource: MvvmCollectionViewDataSource) {
+    public init(_ dataSource: MvvmCollectionViewDataSource, headerMode: UICollectionLayoutListConfiguration.HeaderMode = .supplementary) {
         super.init(sectionProvider: { section, env in
             let sectionModel = dataSource.snapshot().sectionIdentifiers[section]
 
@@ -18,7 +18,7 @@ open class MvvmCollectionViewLayout: UICollectionViewCompositionalLayout {
                 configuration.backgroundColor = backgroundColor
             }
             configuration.showsSeparators = sectionModel.showsSeparators
-            configuration.headerMode = sectionModel.header.isNilOrEmpty ? .none : .supplementary
+            configuration.headerMode = sectionModel.header.isNilOrEmpty ? .none : headerMode
             configuration.trailingSwipeActionsConfigurationProvider = { indexPath in
                 dataSource.trailingSwipeActionsConfigurationProvider?(indexPath) ?? .init(actions: [])
             }

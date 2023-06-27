@@ -10,3 +10,9 @@ import Foundation
 public protocol MvvmSelectableProtocol {
     var selectAction: (() -> Void)? { get }
 }
+
+public extension MvvmViewModel {
+    var canBeSelected: Bool {
+        (self as? MvvmSelectableProtocol)?.selectAction != nil
+    }
+}

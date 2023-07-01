@@ -13,7 +13,12 @@ open class MvvmViewController<ViewModel: MvvmViewModelProtocol>: UIViewControlle
     public let viewModel: ViewModel!
 
     override open var nibName: String? {
-        Self.classNameWithoutGenericType
+        let res = Self.classNameWithoutGenericType
+
+        guard Bundle.main.path(forResource: res, ofType: "nib") != nil
+        else { return nil }
+
+        return res
     }
 
     public required init(viewModel: ViewModel) {

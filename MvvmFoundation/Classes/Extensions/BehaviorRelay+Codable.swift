@@ -30,3 +30,10 @@ public extension PublishRelay where Element == Void {
         self.accept(())
     }
 }
+
+public extension BehaviorRelay {
+    var mutableValue: Element {
+        get { value }
+        set { accept(newValue) }
+    }
+}

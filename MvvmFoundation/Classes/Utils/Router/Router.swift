@@ -120,14 +120,14 @@ public extension Router {
     }
 }
 
-// MARK: - Safe Resolve TableViewCell
+// MARK: - Safe Resolve CollectionViewCell
 public extension Router {
     func safeResolve<VM: MvvmViewModelProtocol>(_ viewModel: VM, from tableView: UICollectionView, at indexPath: IndexPath, with supplementaryKind: String? = nil) -> (any MvvmCollectionViewCellProtocol)? {
         storage[String(describing: type(of: viewModel))]?((tableView, viewModel, indexPath, supplementaryKind)) as? any MvvmCollectionViewCellProtocol
     }
 }
 
-// MARK: - Resolve TableViewCell
+// MARK: - Resolve CollectionViewCell
 public extension Router {
     func resolve<VM: MvvmViewModelProtocol>(_ viewModel: VM, from tableView: UICollectionView, at indexPath: IndexPath, with supplementaryKind: String? = nil) -> any MvvmCollectionViewCellProtocol {
         guard let cell = safeResolve(viewModel, from: tableView, at: indexPath, with: supplementaryKind)

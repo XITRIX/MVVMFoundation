@@ -54,7 +54,7 @@ open class MvvmCollectionViewDataSource: UICollectionViewDiffableDataSource<Mvvm
         var snapshot = Snapshot()
         snapshot.appendSections(sections)
         for section in sections {
-            snapshot.appendItems(section.items.map { .init(viewModel: $0) }, toSection: section)
+            snapshot.appendItems(section.items.unique.map { .init(viewModel: $0) }, toSection: section)
         }
         apply(snapshot, animatingDifferences: animatingDifferences, completion: completion)
     }

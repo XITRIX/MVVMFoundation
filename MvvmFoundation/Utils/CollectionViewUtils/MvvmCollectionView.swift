@@ -11,6 +11,7 @@ import Combine
 public class MvvmCollectionView: UICollectionView {
     public var diffDataSource: MvvmCollectionViewDataSource!
     private let disposeBag = DisposeBag()
+    private var keyboardHandler: KeyboardHandler?
 
     public let sections = PassthroughRelay<[MvvmCollectionSectionModel]>()
 
@@ -31,6 +32,7 @@ public class MvvmCollectionView: UICollectionView {
 
 extension MvvmCollectionView: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard !isEditing else { return }
         let item = diffDataSource.snapshot().sectionIdentifiers[indexPath.section].items[indexPath.item]
         diffDataSource.modelSelected.send(item)
     }
@@ -46,6 +48,7 @@ extension MvvmCollectionView: UICollectionViewDelegate {
 
 private extension MvvmCollectionView {
     func setup() {
+        keyboardHandler = .init(self)
         diffDataSource = MvvmCollectionViewDataSource(collectionView: self)
 
         collectionViewLayout = MvvmCollectionViewLayout(diffDataSource)

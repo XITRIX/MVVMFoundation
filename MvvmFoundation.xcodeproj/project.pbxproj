@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D11333B92AF23C3000FA017E /* KeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11333B82AF23C3000FA017E /* KeyboardHandler.swift */; };
+		D11333BB2AF2403300FA017E /* MvvmViewModel+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11333BA2AF2403300FA017E /* MvvmViewModel+Alert.swift */; };
 		D135C58E2AEF163000440680 /* DelegateObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135C58D2AEF163000440680 /* DelegateObject.swift */; };
 		D135C5A62AEFB9DD00440680 /* ResolverHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135C59F2AEFB9DD00440680 /* ResolverHolder.swift */; };
 		D135C5A72AEFB9DD00440680 /* WeakHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135C5A02AEFB9DD00440680 /* WeakHolder.swift */; };
@@ -48,6 +50,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D11333B82AF23C3000FA017E /* KeyboardHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardHandler.swift; sourceTree = "<group>"; };
+		D11333BA2AF2403300FA017E /* MvvmViewModel+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MvvmViewModel+Alert.swift"; sourceTree = "<group>"; };
 		D135C58D2AEF163000440680 /* DelegateObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegateObject.swift; sourceTree = "<group>"; };
 		D135C59F2AEFB9DD00440680 /* ResolverHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolverHolder.swift; sourceTree = "<group>"; };
 		D135C5A02AEFB9DD00440680 /* WeakHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeakHolder.swift; sourceTree = "<group>"; };
@@ -141,6 +145,7 @@
 				D19E00072AEFC3C4000A17A2 /* UIView+UIViewController.swift */,
 				D19E00172AEFF698000A17A2 /* UIViewController+CellDeselect.swift */,
 				D19E001A2AEFF9CB000A17A2 /* NSObject+Container.swift */,
+				D11333BA2AF2403300FA017E /* MvvmViewModel+Alert.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -244,6 +249,7 @@
 				D135C59D2AEFB9C900440680 /* Container */,
 				D1A226E52AEEFECD00669D6D /* Combine */,
 				D1A226DC2AEEFABA00669D6D /* Navigation */,
+				D11333B82AF23C3000FA017E /* KeyboardHandler.swift */,
 				D135C58D2AEF163000440680 /* DelegateObject.swift */,
 			);
 			path = Utils;
@@ -330,6 +336,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D19E000E2AEFDB1E000A17A2 /* MvvmCollectionView.swift in Sources */,
+				D11333B92AF23C3000FA017E /* KeyboardHandler.swift in Sources */,
 				D1A226E92AEF006700669D6D /* MvvmViewModelWith.swift in Sources */,
 				D135C5A92AEFB9DD00440680 /* SingletonHolder.swift in Sources */,
 				D19E00102AEFF297000A17A2 /* MvvmCollectionViewLayout.swift in Sources */,
@@ -346,6 +353,7 @@
 				D1A226EB2AEF008500669D6D /* MvvmViewController.swift in Sources */,
 				D1A226D22AEEF59600669D6D /* MvvmViewProtocol.swift in Sources */,
 				D19E00042AEFC312000A17A2 /* UICell+Id.swift in Sources */,
+				D11333BB2AF2403300FA017E /* MvvmViewModel+Alert.swift in Sources */,
 				D135C58E2AEF163000440680 /* DelegateObject.swift in Sources */,
 				D1A226E72AEEFEE800669D6D /* BindingContext.swift in Sources */,
 				D135C5A62AEFB9DD00440680 /* ResolverHolder.swift in Sources */,
@@ -375,6 +383,7 @@
 		D1A226CB2AEEF54600669D6D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -430,7 +439,9 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "xrsimulator xros watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -441,6 +452,7 @@
 		D1A226CC2AEEF54600669D6D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -489,7 +501,9 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				SDKROOT = iphoneos;
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "xrsimulator xros watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";

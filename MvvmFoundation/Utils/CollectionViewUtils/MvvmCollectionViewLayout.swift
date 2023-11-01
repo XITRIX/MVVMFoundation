@@ -17,7 +17,9 @@ open class MvvmCollectionViewLayout: UICollectionViewCompositionalLayout {
             if let backgroundColor = sectionModel.backgroundColor {
                 configuration.backgroundColor = backgroundColor
             }
+            #if !os(tvOS)
             configuration.showsSeparators = sectionModel.showsSeparators
+            #endif
             configuration.headerMode = sectionModel.header.isNilOrEmpty ? .none : headerMode
 
             let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: env)
@@ -39,12 +41,17 @@ public extension MvvmCollectionSectionModel.Style {
             return .plain
         case .grouped:
             return .grouped
+        #if !os(tvOS)
         case .insetGrouped:
             return .insetGrouped
         case .sidebar:
             return .sidebar
         case .sidebarPlain:
             return .sidebarPlain
+        #else
+        default:
+            return .grouped
+        #endif
         }
     }
 }

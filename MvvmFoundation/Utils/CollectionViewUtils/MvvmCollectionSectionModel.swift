@@ -23,7 +23,7 @@ public struct MvvmCollectionSectionModel: Hashable {
 
     public var style: Style
     public var showsSeparators: Bool
-    public var backgroundColor: UIColor? = .clear
+    public var backgroundColor: UIColor? = nil
     public var items: [MvvmViewModel]
 
     public func hash(into hasher: inout Hasher) {

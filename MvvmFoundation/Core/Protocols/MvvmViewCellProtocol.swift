@@ -17,7 +17,8 @@ public protocol MvvmViewUIKitCellProtocol: MvvmViewProtocol {
 public protocol MvvmTableViewCellProtocol: MvvmViewUIKitCellProtocol, UITableViewCell {}
 public protocol MvvmCollectionViewCellProtocol: MvvmViewUIKitCellProtocol, UICollectionViewCell {}
 
+@MainActor
 public protocol MvvmSwiftUICellProtocol: MvvmViewCellProtocol, View {
     associatedtype CellType: UICollectionViewCell
-    nonisolated static var registration: UICollectionView.CellRegistration<CellType, ViewModel> { get }
+    static var registration: UICollectionView.CellRegistration<CellType, ViewModel> { get }
 }

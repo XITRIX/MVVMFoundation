@@ -10,7 +10,7 @@ import UIKit
 public enum NavigationType {
     case show
     case present(wrapInNavigation: Bool)
-    case detail
+    case detail(asRoot: Bool)
     case custom(transaction: (_ from: UIViewController, _ to: UIViewController) -> Void)
 }
 
@@ -44,8 +44,14 @@ extension UIViewController: NavigationProtocol {
                 vc = navigationProtocol
             }
             present(vc, animated: true)
-        case .detail:
-            showDetailViewController(navigationProtocol, sender: self)
+        case .detail(let asRoot):
+            if asRoot {
+                let nvc = UINavigationController.resolve()
+                nvc.viewControllers = [navigationProtocol]
+                showDetailViewController(nvc, sender: self)
+            } else {
+                showDetailViewController(navigationProtocol, sender: self)
+            }
         case .custom(let transaction):
             transaction(self, navigationProtocol)
         }

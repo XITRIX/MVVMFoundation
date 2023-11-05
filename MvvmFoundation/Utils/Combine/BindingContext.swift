@@ -14,6 +14,8 @@ public class DisposeBag {
     fileprivate func append(_ cancellable: AnyCancellable) {
         cancellables.append(cancellable)
     }
+
+    public init() {}
 }
 
 public extension DisposeBag {

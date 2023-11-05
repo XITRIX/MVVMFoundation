@@ -16,16 +16,12 @@ open class MvvmViewModel: MvvmViewModelProtocol {
     public let disposeBag = DisposeBag()
 //    public let title = CurrentValueSubject<String?, Never>(nil)
     public var navigationService: (() -> NavigationProtocol?)?
-    public required init() {
-        binding()
-    }
+    public required init() {}
 
     public func setParent(_ parent: (any MvvmViewModelProtocol)?) -> Self {
         self.parent = parent
         return self
     }
-
-    open func binding() {}
 
     open func willAppear() {}
 

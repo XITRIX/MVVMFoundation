@@ -168,7 +168,7 @@
 		D1A226BC2AEEF54600669D6D = {
 			isa = PBXGroup;
 			children = (
-				D1A226C82AEEF54600669D6D /* MvvmFoundation */,
+				D1ACFDD42AF7D2A10098FF56 /* Sources */,
 				D1A226C72AEEF54600669D6D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -256,6 +256,14 @@
 				D135C58D2AEF163000440680 /* DelegateObject.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		D1ACFDD42AF7D2A10098FF56 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				D1A226C82AEEF54600669D6D /* MvvmFoundation */,
+			);
+			path = Sources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

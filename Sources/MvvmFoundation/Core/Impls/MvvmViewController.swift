@@ -8,6 +8,7 @@
 import Combine
 import UIKit
 
+@available(iOS 13.0, *)
 @MainActor
 open class MvvmViewController<ViewModel: MvvmViewModelProtocol>: UIViewController, MvvmViewControllerProtocol {
     public let disposeBag = DisposeBag()

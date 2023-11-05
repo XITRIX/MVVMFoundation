@@ -7,6 +7,7 @@
 
 import UIKit
 
+@available(iOS 13.0, *)
 public extension UICollectionViewDiffableDataSource {
     typealias Snapshot = NSDiffableDataSourceSnapshot<SectionIdentifierType, ItemIdentifierType>
 }

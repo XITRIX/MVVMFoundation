@@ -11,6 +11,7 @@ public protocol MvvmSelectableProtocol {
     var selectAction: (() -> Void)? { get }
 }
 
+@available(iOS 13.0, *)
 public extension MvvmViewModel {
     var canBeSelected: Bool {
         (self as? MvvmSelectableProtocol)?.selectAction != nil

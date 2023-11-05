@@ -7,6 +7,7 @@
 
 import UIKit
 
+@available(iOS 13.0, *)
 public struct MvvmCollectionSectionModel: Hashable {
     public enum Style {
         case plain
@@ -74,6 +75,7 @@ public struct MvvmCollectionSectionModel: Hashable {
     }
 }
 
+@available(iOS 13.0, *)
 @resultBuilder
 @MainActor
 public enum ViewModelsContext {

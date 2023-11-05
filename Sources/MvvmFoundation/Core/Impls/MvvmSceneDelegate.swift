@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 
+@available(iOS 13.0, *)
 open class MvvmSceneDelegate: UIResponder, UIWindowSceneDelegate {
     public var window: UIWindow?
     public let disposeBag = DisposeBag()

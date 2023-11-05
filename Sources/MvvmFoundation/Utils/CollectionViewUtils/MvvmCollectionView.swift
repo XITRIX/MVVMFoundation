@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 
+@available(iOS 14.0, *)
 public class MvvmCollectionView: UICollectionView {
     public var diffDataSource: MvvmCollectionViewDataSource!
     private let disposeBag = DisposeBag()
@@ -30,6 +31,7 @@ public class MvvmCollectionView: UICollectionView {
     }
 }
 
+@available(iOS 14.0, *)
 extension MvvmCollectionView: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard !isEditing else { return }
@@ -46,6 +48,7 @@ extension MvvmCollectionView: UICollectionViewDelegate {
     }
 }
 
+@available(iOS 14.0, *)
 private extension MvvmCollectionView {
     func setup() {
         keyboardHandler = .init(self)

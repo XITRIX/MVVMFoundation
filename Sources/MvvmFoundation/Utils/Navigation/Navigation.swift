@@ -18,14 +18,20 @@ public enum NavigationType {
 public protocol NavigationProtocol: UIViewController {
     func navigate(to navigationProtocol: any NavigationProtocol, by type: NavigationType)
     func dismiss()
+    func pop()
 }
 
 extension UIViewController: NavigationProtocol {
     public func dismiss() {
+        dismiss(animated: true)
+    }
+
+    public func pop() {
         if let navigationController,
            navigationController.viewControllers.count > 1
         {
             navigationController.popViewController(animated: true)
+            return
         }
         dismiss(animated: true)
     }

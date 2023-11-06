@@ -46,6 +46,10 @@ public enum BindingContext {
     public static func buildEither(second component: [AnyCancellable]) -> [AnyCancellable] {
         component
     }
+
+    public static func buildOptional(_ component: [AnyCancellable]?) -> [AnyCancellable] {
+        component ?? []
+    }
 }
 
 @available(iOS 13.0, *)

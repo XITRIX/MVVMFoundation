@@ -12,7 +12,7 @@ import Combine
 //@MainActor
 open class MvvmViewModel: MvvmViewModelProtocol {
     private let uuid = UUID()
-    public var parent: (any MvvmViewModelProtocol)?
+    public weak var parent: (any MvvmViewModelProtocol)?
 
     public let disposeBag = DisposeBag()
 //    public let title = CurrentValueSubject<String?, Never>(nil)

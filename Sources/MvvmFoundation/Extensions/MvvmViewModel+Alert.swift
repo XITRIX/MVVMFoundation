@@ -59,4 +59,20 @@ public extension MvvmViewModelProtocol {
             alert.dismiss(animated: true, completion: nil)
         }
     }
+
+    func textInput(title: String?, message: String?, placeholder: String?, defaultValue: String?, type: UIKeyboardType, cancel: String, accept: String, result: @escaping (String?) -> Void) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addTextField { textField in
+            textField.placeholder = placeholder
+            textField.text = defaultValue
+            textField.keyboardType = type
+        }
+        alert.addAction(.init(title: cancel, style: .cancel) { _ in
+            result(nil)
+        })
+        alert.addAction(.init(title: accept, style: .default) { _ in
+            result(alert.textFields?.first?.text ?? "")
+        })
+        navigationService?()?.present(alert, animated: true)
+    }
 }

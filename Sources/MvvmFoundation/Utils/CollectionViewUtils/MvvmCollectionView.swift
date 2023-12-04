@@ -40,11 +40,13 @@ extension MvvmCollectionView: UICollectionViewDelegate {
     }
 
     public func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        diffDataSource.snapshot().sectionIdentifiers[indexPath.section].items[indexPath.item].canBeSelected
+        guard !isEditing else { return true }
+        return diffDataSource.snapshot().sectionIdentifiers[indexPath.section].items[indexPath.item].canBeSelected
     }
 
     public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        diffDataSource.snapshot().sectionIdentifiers[indexPath.section].items[indexPath.item].canBeSelected
+        guard !isEditing else { return true }
+        return diffDataSource.snapshot().sectionIdentifiers[indexPath.section].items[indexPath.item].canBeSelected
     }
 }
 

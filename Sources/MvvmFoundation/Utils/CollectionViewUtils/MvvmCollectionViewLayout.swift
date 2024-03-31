@@ -20,7 +20,9 @@ open class MvvmCollectionViewLayout: UICollectionViewCompositionalLayout {
             #if !os(tvOS)
             configuration.showsSeparators = sectionModel.showsSeparators
             #endif
+            
             configuration.headerMode = sectionModel.header.isNilOrEmpty ? .none : headerMode
+            configuration.footerMode = sectionModel.footer.isNilOrEmpty ? .none : .supplementary
 
             let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: env)
             return section

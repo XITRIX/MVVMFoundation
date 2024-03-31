@@ -5,8 +5,8 @@
 //  Created by Daniil Vinogradov on 30/10/2023.
 //
 
-import UIKit
 import Combine
+import UIKit
 
 @available(iOS 14.0, *)
 open class MvvmCollectionViewDataSource: UICollectionViewDiffableDataSource<MvvmCollectionSectionModel, MvvmCellViewModelWrapper<MvvmViewModel>> {
@@ -32,15 +32,26 @@ open class MvvmCollectionViewDataSource: UICollectionViewDiffableDataSource<Mvvm
             item.viewModel.resolveCell(from: collectionView, at: indexPath)
         }
 
-        supplementaryViewProvider = { [unowned self] collectionView, _, indexPath in
+        supplementaryViewProvider = { [unowned self] collectionView, elementKind, indexPath in
             guard let dataSource = collectionView.dataSource as? MvvmCollectionViewDataSource
             else { return UICollectionReusableView() }
 
-            let cell = collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: indexPath)
-            var config = cell.defaultContentConfiguration()
-            config.text = dataSource.snapshot().sectionIdentifiers[indexPath.section].header
-            cell.contentConfiguration = config
-            return cell
+            switch elementKind {
+            case UICollectionView.elementKindSectionHeader:
+                let cell = collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: indexPath)
+                var config = cell.defaultContentConfiguration()
+                config.text = dataSource.snapshot().sectionIdentifiers[indexPath.section].header
+                cell.contentConfiguration = config
+                return cell
+            case UICollectionView.elementKindSectionFooter:
+                let cell = collectionView.dequeueConfiguredReusableSupplementary(using: footerRegistration, for: indexPath)
+                var config = cell.defaultContentConfiguration()
+                config.text = dataSource.snapshot().sectionIdentifiers[indexPath.section].footer
+                cell.contentConfiguration = config
+                return cell
+            default:
+                fatalError("\(elementKind) in not registered and cannot be loaded")
+            }
         }
     }
 
@@ -59,6 +70,10 @@ open class MvvmCollectionViewDataSource: UICollectionViewDiffableDataSource<Mvvm
     }
 
     let headerRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionHeader) {
+        _, _, _ in
+    }
+
+    let footerRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionFooter) {
         _, _, _ in
     }
 }

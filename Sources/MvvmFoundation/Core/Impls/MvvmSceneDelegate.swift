@@ -18,10 +18,10 @@ open class MvvmSceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         self.window = window
 
-        initialSetup()
-
         register(in: Mvvm.shared.container)
         routing(in: Mvvm.shared.router)
+        
+        initialSetup()
 
         window.rootViewController = resolveRootVC(with: Mvvm.shared.router)
         window.makeKeyAndVisible()

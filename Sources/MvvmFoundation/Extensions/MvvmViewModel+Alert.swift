@@ -60,12 +60,13 @@ public extension MvvmViewModelProtocol {
         }
     }
 
-    func textInput(title: String?, message: String?, placeholder: String?, defaultValue: String?, type: UIKeyboardType, cancel: String, accept: String, result: @escaping (String?) -> Void) {
+    func textInput(title: String?, message: String?, placeholder: String?, defaultValue: String?, type: UIKeyboardType, secured: Bool = false, cancel: String, accept: String, result: @escaping (String?) -> Void) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addTextField { textField in
             textField.placeholder = placeholder
             textField.text = defaultValue
             textField.keyboardType = type
+            textField.isSecureTextEntry = secured
         }
         alert.addAction(.init(title: cancel, style: .cancel) { _ in
             result(nil)

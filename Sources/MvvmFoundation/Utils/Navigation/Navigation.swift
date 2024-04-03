@@ -79,4 +79,8 @@ public extension MvvmViewModelProtocol {
     func dismiss() {
         navigationService?()?.dismiss()
     }
+
+    func pop() {
+        navigationService?()?.pop()
+    }
 }

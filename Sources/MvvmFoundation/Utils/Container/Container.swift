@@ -41,6 +41,13 @@ public extension Container {
         map[String(describing: type) + (key?.value ?? "")] = SingletonHolder(factory: factory)
     }
 
+    // MARK: - Daemon
+    func registerDaemon<T: Any>(type: T.Type = T.self, key: ContainerKey? = nil, factory: @escaping () -> T) {
+        let holder = SingletonHolder(factory: factory)
+        map[String(describing: type) + (key?.value ?? "")] = holder
+        _ = holder.getter
+    }
+
     // MARK: - Weak
     func registerWeak<T: AnyObject>(type: T.Type = T.self, key: ContainerKey? = nil, factory: @escaping () -> T) {
         map[String(describing: type) + (key?.value ?? "")] = WeakHolder(factory: factory)

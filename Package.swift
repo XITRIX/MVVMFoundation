@@ -4,7 +4,7 @@ import PackageDescription
  
 let package = Package(
     name: "MvvmFoundation",
-    platforms: [.iOS(.v13)],
+    platforms: [.iOS(.v13), .tvOS(.v14)],
     products: [
         .library(
             name: "MvvmFoundation",

@@ -17,10 +17,10 @@ open class MvvmCollectionViewLayout: UICollectionViewCompositionalLayout {
             if let backgroundColor = sectionModel.backgroundColor {
                 configuration.backgroundColor = backgroundColor
             }
-            #if !os(tvOS)
+#if !os(tvOS)
             configuration.showsSeparators = sectionModel.showsSeparators
-            #endif
-            
+#endif
+
             configuration.headerMode = sectionModel.header.isNilOrEmpty ? .none : headerMode
             configuration.footerMode = sectionModel.footer.isNilOrEmpty ? .none : .supplementary
 
@@ -43,17 +43,24 @@ public extension MvvmCollectionSectionModel.Style {
             return .plain
         case .grouped:
             return .grouped
-        #if !os(tvOS)
+        case .platformPlain:
+#if os(visionOS)
+            return .sidebar
+#else
+            return .plain
+#endif
+            
+#if !os(tvOS)
         case .insetGrouped:
             return .insetGrouped
         case .sidebar:
             return .sidebar
         case .sidebarPlain:
             return .sidebarPlain
-        #else
+#else
         default:
             return .grouped
-        #endif
+#endif
         }
     }
 }

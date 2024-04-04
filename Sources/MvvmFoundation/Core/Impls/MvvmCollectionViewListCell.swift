@@ -11,10 +11,22 @@ import UIKit
 @available(iOS 14.0, *)
 open class MvvmCollectionViewListCell<ViewModel: MvvmViewModelProtocol>: UICollectionViewListCell, MvvmCollectionViewCellProtocol {
     public private(set) var disposeBag = DisposeBag()
-    private(set) public var viewModel: ViewModel = .init()
+    public private(set) var viewModel: ViewModel = .init()
     open var attachCellToContentView: Bool { true }
 
-    public override class var reusableId: String { classNameWithoutGenericType }
+    override public class var reusableId: String { classNameWithoutGenericType }
+
+    private var minimumSystemHeightMarginValue: Double {
+#if os(visionOS)
+        10
+#else
+        8
+#endif
+    }
+
+    open var cellRespectsSystemMinimumHeight: Bool = true {
+        didSet { layoutMarginsDidChange() }
+    }
 
     public init() {
         super.init(frame: .zero)
@@ -22,7 +34,7 @@ open class MvvmCollectionViewListCell<ViewModel: MvvmViewModelProtocol>: UIColle
         initSetup()
     }
 
-    public override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
         initSetup()
@@ -39,6 +51,7 @@ open class MvvmCollectionViewListCell<ViewModel: MvvmViewModelProtocol>: UIColle
         else { return }
 
         contentView.preservesSuperviewLayoutMargins = true
+
         let nib = Bundle.main.loadNibNamed(Self.classNameWithoutGenericType, owner: self)
         if let view = nib?.first as? UIView {
             let targetContainer = attachCellToContentView ? contentView : self
@@ -72,6 +85,20 @@ open class MvvmCollectionViewListCell<ViewModel: MvvmViewModelProtocol>: UIColle
 
     public func setViewModel(_ viewModel: ViewModel) {
         self.viewModel = viewModel
+    }
+
+    open override var layoutMargins: UIEdgeInsets {
+        get {
+            var res = super.layoutMargins
+            if cellRespectsSystemMinimumHeight {
+                res.top = minimumSystemHeightMarginValue
+                res.bottom = minimumSystemHeightMarginValue
+            }
+            return res
+        }
+        set {
+            super.layoutMargins = newValue
+        }
     }
 }
 

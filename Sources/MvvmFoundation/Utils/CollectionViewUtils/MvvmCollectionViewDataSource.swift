@@ -13,6 +13,8 @@ open class MvvmCollectionViewDataSource: UICollectionViewDiffableDataSource<Mvvm
     private unowned let collectionView: UICollectionView
 
     public let modelSelected = PassthroughSubject<MvvmViewModel, Never>()
+    public let willReorderCells = PassthroughSubject<NSDiffableDataSourceTransaction<MvvmCollectionSectionModel, MvvmCellViewModelWrapper<MvvmViewModel>>, Never>()
+    public let didReorderCells = PassthroughSubject<NSDiffableDataSourceTransaction<MvvmCollectionSectionModel, MvvmCellViewModelWrapper<MvvmViewModel>>, Never>()
 
     public func deselectItems(animated: Bool) {
         for indexPath in collectionView.indexPathsForSelectedItems ?? [] {
@@ -31,6 +33,10 @@ open class MvvmCollectionViewDataSource: UICollectionViewDiffableDataSource<Mvvm
         super.init(collectionView: collectionView) { collectionView, indexPath, item in
             item.viewModel.resolveCell(from: collectionView, at: indexPath)
         }
+
+        reorderingHandlers.canReorderItem = { $0.viewModel.canBeReordered }
+        reorderingHandlers.willReorder = { [willReorderCells] in willReorderCells.send($0) }
+        reorderingHandlers.didReorder = { [didReorderCells] in didReorderCells.send($0) }
 
         supplementaryViewProvider = { [unowned self] collectionView, elementKind, indexPath in
             guard let dataSource = collectionView.dataSource as? MvvmCollectionViewDataSource

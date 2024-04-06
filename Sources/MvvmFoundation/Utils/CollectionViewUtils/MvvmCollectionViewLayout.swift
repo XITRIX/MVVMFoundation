@@ -21,6 +21,9 @@ open class MvvmCollectionViewLayout: UICollectionViewCompositionalLayout {
             configuration.showsSeparators = sectionModel.showsSeparators
 #endif
 
+            if #available(iOS 15, *) {
+                configuration.headerTopPadding = sectionModel.headerTopPadding
+            }
             configuration.headerMode = sectionModel.header.isNilOrEmpty ? .none : headerMode
             configuration.footerMode = sectionModel.footer.isNilOrEmpty ? .none : .supplementary
 

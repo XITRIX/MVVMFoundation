@@ -21,6 +21,7 @@ public struct MvvmCollectionSectionModel: Hashable {
     public let id: String
 
     public var header: String?
+    public var headerTopPadding: CGFloat?
     public var footer: String?
 
     public var style: Style
@@ -43,6 +44,7 @@ public struct MvvmCollectionSectionModel: Hashable {
 
     public init(id: String,
                 header: String? = nil,
+                headerTopPadding: CGFloat? = nil,
                 footer: String? = nil,
                 style: MvvmCollectionSectionModel.Style = .insetGrouped,
                 showsSeparators: Bool = true,
@@ -51,6 +53,7 @@ public struct MvvmCollectionSectionModel: Hashable {
     {
         self.id = id
         self.header = header
+        self.headerTopPadding = headerTopPadding
         self.footer = footer
         self.style = style
         self.showsSeparators = showsSeparators
@@ -60,6 +63,7 @@ public struct MvvmCollectionSectionModel: Hashable {
 
     public init(id: String,
                 header: String? = nil,
+                headerTopPadding: CGFloat? = nil,
                 footer: String? = nil,
                 style: MvvmCollectionSectionModel.Style = .insetGrouped,
                 showsSeparators: Bool = true,
@@ -68,6 +72,7 @@ public struct MvvmCollectionSectionModel: Hashable {
     {
         self.id = id
         self.header = header
+        self.headerTopPadding = headerTopPadding
         self.footer = footer
         self.style = style
         self.showsSeparators = showsSeparators

@@ -5,14 +5,15 @@
 //  Created by Daniil Vinogradov on 30/10/2023.
 //
 
-import UIKit
 import Combine
+import UIKit
 
 @available(iOS 14.0, *)
 public class MvvmCollectionView: UICollectionView {
     public var diffDataSource: MvvmCollectionViewDataSource!
     private let disposeBag = DisposeBag()
     private var keyboardHandler: KeyboardHandler?
+    private var longPressRecognizer: UILongPressGestureRecognizer!
 
     public let sections = PassthroughRelay<[MvvmCollectionSectionModel]>()
 
@@ -26,7 +27,7 @@ public class MvvmCollectionView: UICollectionView {
         setup()
     }
 
-    public override func reloadData() {
+    override public func reloadData() {
         super.reloadData()
     }
 }
@@ -56,6 +57,10 @@ private extension MvvmCollectionView {
         keyboardHandler = .init(self)
         diffDataSource = MvvmCollectionViewDataSource(collectionView: self)
 
+        longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPress(longPressGestureRecognizer:)))
+        longPressRecognizer.delegate = self
+        addGestureRecognizer(longPressRecognizer)
+
         collectionViewLayout = MvvmCollectionViewLayout(diffDataSource)
         dataSource = diffDataSource
         delegate = self
@@ -72,5 +77,34 @@ private extension MvvmCollectionView {
                 selectable.selectAction?()
             }
         }
+    }
+
+    @objc func longPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        guard longPressGestureRecognizer.state == .began else { return }
+        let touchPoint = longPressGestureRecognizer.location(in: self)
+
+        guard let indexPath = indexPathForItem(at: touchPoint)
+        else { return }
+
+        let item = diffDataSource.snapshot().sectionIdentifiers[indexPath.section].items[indexPath.item]
+//        guard item.canBeLongPressed else { return }
+
+        (item as? MvvmLongPressProtocol)?.longPressAction?()
+    }
+}
+
+@available(iOS 14.0, *)
+extension MvvmCollectionView: UIGestureRecognizerDelegate {
+    override public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard gestureRecognizer == longPressRecognizer
+        else { return super.gestureRecognizerShouldBegin(gestureRecognizer) }
+
+        let touchPoint = gestureRecognizer.location(in: self)
+
+        guard let indexPath = indexPathForItem(at: touchPoint)
+        else { return false }
+
+        let item = diffDataSource.snapshot().sectionIdentifiers[indexPath.section].items[indexPath.item]
+        return item.canBeLongPressed
     }
 }

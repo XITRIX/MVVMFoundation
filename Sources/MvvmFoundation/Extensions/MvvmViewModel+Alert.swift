@@ -42,7 +42,7 @@ private extension MvvmAlertStyle {
 }
 
 public extension MvvmViewModelProtocol {
-    func alert(title: String?, message: String?, style: MvvmAlertStyle = .alert, actions: [MvvmAlertAction]) {
+    func alert(title: String?, message: String? = nil, style: MvvmAlertStyle = .alert, actions: [MvvmAlertAction]) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: style.alertStyle)
         for action in actions {
             alert.addAction(action.alertAction)
@@ -60,7 +60,7 @@ public extension MvvmViewModelProtocol {
         }
     }
 
-    func textInput(title: String?, message: String?, placeholder: String?, defaultValue: String?, type: UIKeyboardType, secured: Bool = false, cancel: String, accept: String, result: @escaping (String?) -> Void) {
+    func textInput(title: String?, message: String? = nil, placeholder: String?, defaultValue: String? = nil, type: UIKeyboardType = .default, secured: Bool = false, cancel: String, accept: String, result: @escaping (String?) -> Void) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addTextField { textField in
             textField.placeholder = placeholder

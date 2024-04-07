@@ -17,6 +17,9 @@ public class MvvmCollectionView: UICollectionView {
 
     public let sections = PassthroughRelay<[MvvmCollectionSectionModel]>()
 
+    public var contextMenuConfigurationForItemsAt: ((_ indexPaths: [IndexPath], _ point: CGPoint) -> UIContextMenuConfiguration?)?
+    public var willPerformPreviewActionForMenuWith: ((_ configuration: UIContextMenuConfiguration, _ animator: any UIContextMenuInteractionCommitAnimating) -> ())?
+
     override public init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         setup()
@@ -48,6 +51,14 @@ extension MvvmCollectionView: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         guard !isEditing else { return true }
         return diffDataSource.snapshot().sectionIdentifiers[indexPath.section].items[indexPath.item].canBeSelected
+    }
+
+    public func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
+        contextMenuConfigurationForItemsAt?(indexPaths, point)
+    }
+
+    public func collectionView(_ collectionView: UICollectionView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: any UIContextMenuInteractionCommitAnimating) {
+        willPerformPreviewActionForMenuWith?(configuration, animator)
     }
 }
 

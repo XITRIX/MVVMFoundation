@@ -20,6 +20,13 @@ public class MvvmCollectionView: UICollectionView {
     public var contextMenuConfigurationForItemsAt: ((_ indexPaths: [IndexPath], _ point: CGPoint) -> UIContextMenuConfiguration?)?
     public var willPerformPreviewActionForMenuWith: ((_ configuration: UIContextMenuConfiguration, _ animator: any UIContextMenuInteractionCommitAnimating) -> ())?
 
+    @Published public var selectedIndexPaths: [IndexPath] = []
+
+    init() {
+        super.init(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+        setup()
+    }
+
     override public init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         setup()
@@ -33,14 +40,28 @@ public class MvvmCollectionView: UICollectionView {
     override public func reloadData() {
         super.reloadData()
     }
+
+    public override var isEditing: Bool {
+        get { super.isEditing }
+        set {
+            super.isEditing = newValue
+            selectedIndexPaths = indexPathsForSelectedItems ?? []
+        }
+    }
 }
 
 @available(iOS 14.0, *)
 extension MvvmCollectionView: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedIndexPaths = collectionView.indexPathsForSelectedItems ?? []
+
         guard !isEditing else { return }
         let item = diffDataSource.snapshot().sectionIdentifiers[indexPath.section].items[indexPath.item]
         diffDataSource.modelSelected.send(item)
+    }
+
+    public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        selectedIndexPaths = collectionView.indexPathsForSelectedItems ?? []
     }
 
     public func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {

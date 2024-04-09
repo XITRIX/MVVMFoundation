@@ -12,7 +12,10 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "MvvmFoundation"
+            name: "MvvmFoundation",
+            swiftSettings: [
+                .enableUpcomingFeature("StrictConcurrency")
+            ]
         )
     ]
 )

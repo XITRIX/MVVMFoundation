@@ -43,7 +43,9 @@ extension UIViewController: NavigationProtocol {
         case .present(let wrapInNavigation):
             let vc: UIViewController
             if wrapInNavigation {
-                let nvc = UINavigationController(rootViewController: navigationProtocol)
+                let nvc = UINavigationController.resolve()
+                nvc.viewControllers = [navigationProtocol]
+//                let nvc = UINavigationController(rootViewController: navigationProtocol)
                 nvc.modalPresentationStyle = navigationProtocol.modalPresentationStyle
                 vc = nvc
             } else {

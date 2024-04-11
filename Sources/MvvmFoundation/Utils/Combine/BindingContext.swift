@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 @available(iOS 13.0, *)
-public class DisposeBag {
+public class DisposeBag: Codable {
     private var cancellables: [AnyCancellable] = []
 
     fileprivate func append(_ cancellable: AnyCancellable) {
@@ -17,6 +17,10 @@ public class DisposeBag {
     }
 
     public init() {}
+
+    // Confirm to Codable to allow it inside of Codable objects
+    public required init(from decoder: any Decoder) throws {}
+    public func encode(to encoder: any Encoder) throws {}
 }
 
 @available(iOS 13.0, *)

@@ -99,7 +99,9 @@ private extension MvvmCollectionView {
 
         disposeBag.bind {
             sections.sink { [unowned self] sections in
-                diffDataSource.applyModels(sections)
+                diffDataSource.applyModels(sections) {
+                    selectedIndexPaths = indexPathsForSelectedItems ?? []
+                }
             }
 
             diffDataSource.modelSelected.sink { model in

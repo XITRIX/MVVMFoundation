@@ -16,6 +16,10 @@ open class MvvmCollectionViewDataSource: UICollectionViewDiffableDataSource<Mvvm
     public let willReorderCells = PassthroughSubject<NSDiffableDataSourceTransaction<MvvmCollectionSectionModel, MvvmCellViewModelWrapper<MvvmViewModel>>, Never>()
     public let didReorderCells = PassthroughSubject<NSDiffableDataSourceTransaction<MvvmCollectionSectionModel, MvvmCellViewModelWrapper<MvvmViewModel>>, Never>()
 
+    public var trailingSwipeActionsConfigurationProvider: UICollectionLayoutListConfiguration.SwipeActionsConfigurationProvider? {
+        didSet { apply(snapshot()) } // To reload CollectionLayout
+    }
+
     public func deselectItems(animated: Bool) {
         for indexPath in collectionView.indexPathsForSelectedItems ?? [] {
             collectionView.deselectItem(at: indexPath, animated: animated)

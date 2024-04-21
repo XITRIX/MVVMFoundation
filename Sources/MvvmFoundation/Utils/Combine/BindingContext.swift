@@ -65,3 +65,9 @@ public func bind(in disposeBag: inout [AnyCancellable], @BindingContext block: (
 public func bind(in disposeBag: DisposeBag, @BindingContext block: () -> [AnyCancellable]) {
     block().forEach { disposeBag.append($0) }
 }
+
+public extension AnyCancellable {
+    func store(in disposeBag: DisposeBag) {
+        disposeBag.append(self)
+    }
+}

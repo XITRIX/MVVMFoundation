@@ -7,8 +7,15 @@
 
 import Foundation
 
-public extension NSObject {
+public protocol Resolvable {
+    static func resolve() -> Self
+}
+
+public extension Resolvable {
     static func resolve() -> Self {
         Mvvm.shared.container.resolve()
     }
 }
+
+extension NSObject: Resolvable { }
+extension MvvmViewModel: Resolvable { }

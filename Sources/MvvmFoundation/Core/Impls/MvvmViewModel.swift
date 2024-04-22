@@ -32,7 +32,7 @@ open class MvvmViewModel: MvvmViewModelProtocol {
 
     open func didDisappear() {}
 
-    public func setNavigationService(_ navigationService: @escaping () -> NavigationProtocol?) {
+    open func setNavigationService(_ navigationService: @escaping () -> NavigationProtocol?) {
         self.navigationService = navigationService
     }
 

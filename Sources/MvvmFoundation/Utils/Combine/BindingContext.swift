@@ -39,7 +39,15 @@ public enum BindingContext {
         components
     }
 
-    public static func buildArray(_ components: [[AnyCancellable]]) -> [AnyCancellable] {
+    public static func buildBlock(_ components: [AnyCancellable]) -> [AnyCancellable] {
+        components
+    }
+
+    public static func buildBlock(_ components: [AnyCancellable]...) -> [AnyCancellable] {
+        components.flatMap { $0 }
+    }
+
+    public static func buildBlock(_ components: [[AnyCancellable]]) -> [AnyCancellable] {
         components.flatMap { $0 }
     }
 
@@ -53,6 +61,10 @@ public enum BindingContext {
 
     public static func buildOptional(_ component: [AnyCancellable]?) -> [AnyCancellable] {
         component ?? []
+    }
+
+    public static func buildExpression(_ expression: AnyCancellable) -> [AnyCancellable] {
+        [expression]
     }
 }
 

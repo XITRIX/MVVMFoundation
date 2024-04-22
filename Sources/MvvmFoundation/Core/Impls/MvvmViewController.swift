@@ -26,7 +26,10 @@ open class MvvmViewController<ViewModel: MvvmViewModelProtocol>: UIViewControlle
     public required init(viewModel: ViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        self.viewModel.setNavigationService { [unowned self] in self }
+
+        if viewModel.navigationService == nil {
+            viewModel.setNavigationService { [unowned self] in self }
+        }
 
         disposeBag.bind {
 //            rx.title <- viewModel.title

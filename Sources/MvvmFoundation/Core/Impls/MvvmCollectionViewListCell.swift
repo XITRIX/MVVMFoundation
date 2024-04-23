@@ -11,7 +11,13 @@ import UIKit
 @available(iOS 14.0, *)
 open class MvvmCollectionViewListCell<ViewModel: MvvmViewModelProtocol>: UICollectionViewListCell, MvvmCollectionViewCellProtocol {
     public private(set) var disposeBag = DisposeBag()
-    public private(set) var viewModel: ViewModel = .init()
+
+    private var _viewModel: ViewModel!
+    public private(set) var viewModel: ViewModel {
+        get { _viewModel}
+        set { _viewModel = newValue }
+    }
+
     open var attachCellToContentView: Bool { true }
 
     override public class var reusableId: String { classNameWithoutGenericType }
@@ -74,9 +80,19 @@ open class MvvmCollectionViewListCell<ViewModel: MvvmViewModelProtocol>: UIColle
 
     open func setup(with viewModel: ViewModel) {}
 
+    // Free bindings on cell reuse
     override public func prepareForReuse() {
         super.prepareForReuse()
         resetBundings()
+    }
+
+    // Free attached viewModel and bindings if cell went into reusable stash
+    open override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        if superview == nil {
+            resetBundings()
+            _viewModel = nil
+        }
     }
 
     public func resetBundings() {

@@ -16,7 +16,7 @@ open class MvvmViewModel: MvvmViewModelProtocol {
 
     public let disposeBag = DisposeBag()
 //    public let title = CurrentValueSubject<String?, Never>(nil)
-    public var navigationService: (() -> NavigationProtocol?)?
+    public private(set) var navigationService: (() -> NavigationProtocol?)?
     public required init() {}
 
     public func setParent(_ parent: (any MvvmViewModelProtocol)?) -> Self {

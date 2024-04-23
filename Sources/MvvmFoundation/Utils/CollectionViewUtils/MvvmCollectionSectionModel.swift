@@ -37,9 +37,7 @@ public struct MvvmCollectionSectionModel: Hashable {
         lhs.id == rhs.id &&
             lhs.style == rhs.style &&
             lhs.showsSeparators == rhs.showsSeparators &&
-            lhs.backgroundColor == rhs.backgroundColor &&
-            lhs.header == rhs.header &&
-            lhs.footer == rhs.footer
+            lhs.backgroundColor == rhs.backgroundColor
     }
 
     public init(id: String,

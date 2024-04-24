@@ -63,6 +63,10 @@ public enum BindingContext {
         component ?? []
     }
 
+    public static func buildExpression(_ expression: [AnyCancellable?]) -> [AnyCancellable] {
+        expression.compactMap { $0 }
+    }
+
     public static func buildExpression(_ expression: AnyCancellable) -> [AnyCancellable] {
         [expression]
     }

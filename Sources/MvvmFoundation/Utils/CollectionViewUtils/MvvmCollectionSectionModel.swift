@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 @available(iOS 13.0, *)
 public struct MvvmCollectionSectionModel: Hashable {
@@ -20,9 +21,9 @@ public struct MvvmCollectionSectionModel: Hashable {
 
     public let id: String
 
-    public var header: String?
+    public var header: AnyPublisher<String, Never>?
     public var headerTopPadding: CGFloat?
-    public var footer: String?
+    public var footer: AnyPublisher<String, Never>?
 
     public var style: Style
     public var showsSeparators: Bool
@@ -50,9 +51,9 @@ public struct MvvmCollectionSectionModel: Hashable {
                 items: [MvvmViewModel])
     {
         self.id = id
-        self.header = header
+        self.header = .init(header)
         self.headerTopPadding = headerTopPadding
-        self.footer = footer
+        self.footer = .init(footer)
         self.style = style
         self.showsSeparators = showsSeparators
         self.backgroundColor = backgroundColor
@@ -63,6 +64,44 @@ public struct MvvmCollectionSectionModel: Hashable {
                 header: String? = nil,
                 headerTopPadding: CGFloat? = nil,
                 footer: String? = nil,
+                style: MvvmCollectionSectionModel.Style = .insetGrouped,
+                showsSeparators: Bool = true,
+                backgroundColor: UIColor? = .clear,
+                @ViewModelsContext items: () -> [MvvmViewModel])
+    {
+        self.id = id
+        self.header = .init(header)
+        self.headerTopPadding = headerTopPadding
+        self.footer = .init(footer)
+        self.style = style
+        self.showsSeparators = showsSeparators
+        self.backgroundColor = backgroundColor
+        self.items = items()
+    }
+
+    public init(id: String,
+                header: AnyPublisher<String, Never>?,
+                headerTopPadding: CGFloat? = nil,
+                footer: AnyPublisher<String, Never>?,
+                style: MvvmCollectionSectionModel.Style = .insetGrouped,
+                showsSeparators: Bool = true,
+                backgroundColor: UIColor? = .clear,
+                items: [MvvmViewModel])
+    {
+        self.id = id
+        self.header = header
+        self.headerTopPadding = headerTopPadding
+        self.footer = footer
+        self.style = style
+        self.showsSeparators = showsSeparators
+        self.backgroundColor = backgroundColor
+        self.items = items
+    }
+
+    public init(id: String,
+                header: AnyPublisher<String, Never>?,
+                headerTopPadding: CGFloat? = nil,
+                footer: AnyPublisher<String, Never>?,
                 style: MvvmCollectionSectionModel.Style = .insetGrouped,
                 showsSeparators: Bool = true,
                 backgroundColor: UIColor? = .clear,

@@ -48,16 +48,28 @@ open class MvvmCollectionViewDataSource: UICollectionViewDiffableDataSource<Mvvm
 
             switch elementKind {
             case UICollectionView.elementKindSectionHeader:
-                let cell = collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: indexPath)
-                var config = cell.defaultContentConfiguration()
-                config.text = dataSource.snapshot().sectionIdentifiers[indexPath.section].header
-                cell.contentConfiguration = config
+                let cell = collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: indexPath) as! MvvmHeaderFooterCell
+                cell.disposeBag.bind {
+                    if let header = dataSource.snapshot().sectionIdentifiers[indexPath.section].header {
+                        header.sink(receiveValue: { header in
+                            var config = cell.defaultContentConfiguration()
+                            config.text = header
+                            cell.contentConfiguration = config
+                        })
+                    }
+                }
                 return cell
             case UICollectionView.elementKindSectionFooter:
-                let cell = collectionView.dequeueConfiguredReusableSupplementary(using: footerRegistration, for: indexPath)
-                var config = cell.defaultContentConfiguration()
-                config.text = dataSource.snapshot().sectionIdentifiers[indexPath.section].footer
-                cell.contentConfiguration = config
+                let cell = collectionView.dequeueConfiguredReusableSupplementary(using: footerRegistration, for: indexPath) as! MvvmHeaderFooterCell
+                cell.disposeBag.bind {
+                    if let footer = dataSource.snapshot().sectionIdentifiers[indexPath.section].footer {
+                        footer.sink(receiveValue: { footer in
+                            var config = cell.defaultContentConfiguration()
+                            config.text = footer
+                            cell.contentConfiguration = config
+                        })
+                    }
+                }
                 return cell
             default:
                 fatalError("\(elementKind) in not registered and cannot be loaded")
@@ -79,11 +91,11 @@ open class MvvmCollectionViewDataSource: UICollectionViewDiffableDataSource<Mvvm
         applyModels(sections, animatingDifferences: true, completion: nil)
     }
 
-    let headerRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionHeader) {
+    let headerRegistration = UICollectionView.SupplementaryRegistration<MvvmHeaderFooterCell>(elementKind: UICollectionView.elementKindSectionHeader) {
         _, _, _ in
     }
 
-    let footerRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionFooter) {
+    let footerRegistration = UICollectionView.SupplementaryRegistration<MvvmHeaderFooterCell>(elementKind: UICollectionView.elementKindSectionFooter) {
         _, _, _ in
     }
 }

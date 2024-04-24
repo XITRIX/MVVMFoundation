@@ -25,8 +25,8 @@ open class MvvmCollectionViewLayout: UICollectionViewCompositionalLayout {
             if #available(iOS 15, *) {
                 configuration.headerTopPadding = sectionModel.headerTopPadding
             }
-            configuration.headerMode = sectionModel.header.isNilOrEmpty ? .none : headerMode
-            configuration.footerMode = sectionModel.footer.isNilOrEmpty ? .none : .supplementary
+            configuration.headerMode = sectionModel.header == nil ? .none : headerMode
+            configuration.footerMode = sectionModel.footer == nil ? .none : .supplementary
 
             let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: env)
             return section

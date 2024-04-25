@@ -68,9 +68,9 @@ open class MvvmCollectionViewListCell<ViewModel: MvvmViewModelProtocol>: UIColle
             targetContainer.addSubview(view)
 
             NSLayoutConstraint.activate([
-                view.leftAnchor.constraint(equalTo: targetContainer.leftAnchor),
+                view.leadingAnchor.constraint(equalTo: targetContainer.leadingAnchor),
                 view.topAnchor.constraint(equalTo: targetContainer.topAnchor),
-                targetContainer.rightAnchor.constraint(equalTo: view.rightAnchor),
+                targetContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                 targetContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
         }

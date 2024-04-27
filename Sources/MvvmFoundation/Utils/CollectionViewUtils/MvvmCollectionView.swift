@@ -10,7 +10,7 @@ import UIKit
 
 @available(iOS 14.0, *)
 public class MvvmCollectionView: UICollectionView {
-    public var diffDataSource: MvvmCollectionViewDataSource!
+    public private(set) var diffDataSource: MvvmCollectionViewDataSource!
     public var mvvmCollectionViewLayout: MvvmCollectionViewLayout! { collectionViewLayout as? MvvmCollectionViewLayout }
 
     private let disposeBag = DisposeBag()

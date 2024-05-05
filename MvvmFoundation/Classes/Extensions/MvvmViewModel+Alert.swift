@@ -25,6 +25,7 @@ extension MvvmAlertAction {
     }
 }
 
+@MainActor
 public extension MvvmViewModelProtocol {
     func alert(title: String?, message: String?, actions: [MvvmAlertAction]) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -32,5 +33,9 @@ public extension MvvmViewModelProtocol {
             alert.addAction(action.alertAction)
         }
         navigationService.present(alert, animated: true)
+    }
+
+    func alert(configure: () -> UIAlertController) {
+        navigationService.present(configure(), animated: true)
     }
 }

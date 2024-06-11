@@ -12,7 +12,7 @@ import UIKit
 @MainActor
 open class MvvmViewController<ViewModel: MvvmViewModelProtocol>: UIViewController, MvvmViewControllerProtocol {
     public let disposeBag = DisposeBag()
-    public let viewModel: ViewModel
+    nonisolated public let viewModel: ViewModel
 
     override open var nibName: String? {
         let res = Self.classNameWithoutGenericType

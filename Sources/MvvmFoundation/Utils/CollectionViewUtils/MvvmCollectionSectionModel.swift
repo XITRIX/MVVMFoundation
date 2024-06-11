@@ -120,7 +120,6 @@ public struct MvvmCollectionSectionModel: Hashable {
 
 @available(iOS 13.0, *)
 @resultBuilder
-@MainActor
 public enum ViewModelsContext {
     public static func buildBlock() -> [MvvmViewModel] { [] }
 

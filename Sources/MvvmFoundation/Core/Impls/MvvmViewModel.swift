@@ -9,7 +9,6 @@ import Foundation
 import Combine
 
 @available(iOS 13.0, *)
-//@MainActor
 open class MvvmViewModel: MvvmViewModelProtocol {
     private let uuid = UUID()
     public weak var parent: (any MvvmViewModelProtocol)?

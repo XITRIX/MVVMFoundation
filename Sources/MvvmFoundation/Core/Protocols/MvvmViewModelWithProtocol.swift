@@ -7,13 +7,11 @@
 
 import Foundation
 
-@MainActor
 public protocol MvvmViewModelWithProtocol: MvvmViewModelProtocol {
     associatedtype Model
     func prepare(with model: Model)
 }
 
-@MainActor
 extension MvvmViewModelWithProtocol {
     public init(with model: Model) {
         self.init()

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class Mvvm {
+public class Mvvm: @unchecked Sendable {
     public static var shared = Mvvm()
 
     public let container = Container()

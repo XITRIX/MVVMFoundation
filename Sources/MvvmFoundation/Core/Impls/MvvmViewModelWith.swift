@@ -8,7 +8,6 @@
 import Foundation
 
 @available(iOS 13.0, *)
-@MainActor
 open class MvvmViewModelWith<Model>: MvvmViewModel, MvvmViewModelWithProtocol {
     open func prepare(with model: Model) {}
 }

@@ -15,11 +15,10 @@ public class Router {
 
 // MARK: - Register ViewController
 public extension Router {
-    @MainActor
     func register<VM: MvvmViewModelProtocol, VC: MvvmViewControllerProtocol>(_ controller: VC.Type)
         where VC.ViewModel == VM
     {
-        storage[String(describing: VM.self)] = { viewModel in
+        storage[String(describing: VM.self)] = { @MainActor viewModel in
             let vm = viewModel as! VM
             return VC(viewModel: vm)
         }
@@ -28,6 +27,7 @@ public extension Router {
 
 // MARK: - Safe Resolve ViewController
 public extension Router {
+    @MainActor
     func safeResolve<VM: MvvmViewModelProtocol>(_ viewModel: VM) -> (any MvvmViewControllerProtocol)? {
         storage[String(describing: VM.self)]?(viewModel) as? any MvvmViewControllerProtocol
     }
@@ -35,6 +35,7 @@ public extension Router {
 
 // MARK: - Resolve ViewController
 public extension Router {
+    @MainActor
     func resolve<VM: MvvmViewModelProtocol>(_ viewModel: VM) -> any MvvmViewControllerProtocol {
         guard let vc = safeResolve(viewModel)
         else { fatalError("Could not resolve \(VM.self). Register it first") }
@@ -89,7 +90,6 @@ public extension Router {
 
 // MARK: - Register CollectionViewCell
 public extension Router {
-    @MainActor
     func register<VM: MvvmViewModelProtocol, V: MvvmCollectionViewCellProtocol>(_ cell: V.Type)
         where V.ViewModel == VM
     {
@@ -120,12 +120,11 @@ public extension Router {
     }
 
     @available(iOS 14.0, *)
-    @MainActor
     func register<VM: MvvmViewModelProtocol, V: MvvmSwiftUICellProtocol>(_ cell: V.Type)
         where V.ViewModel == VM
     {
         _ = V.registration // Initialise registration
-        storage[String(describing: VM.self)] = { model in
+        storage[String(describing: VM.self)] = { @MainActor model in
             let (collectionView, viewModel, indexPath, supplementaryKind) = model as! (UICollectionView, VM, IndexPath, String?)
 
             let getCell = {
@@ -143,6 +142,7 @@ public extension Router {
 
 // MARK: - Safe Resolve CollectionViewCell
 public extension Router {
+    @MainActor
     func safeResolve<VM: MvvmViewModelProtocol>(_ viewModel: VM, from tableView: UICollectionView, at indexPath: IndexPath, with supplementaryKind: String? = nil) -> UICollectionViewCell? {
         storage[String(describing: type(of: viewModel))]?((tableView, viewModel, indexPath, supplementaryKind)) as? UICollectionViewCell
     }
@@ -150,6 +150,7 @@ public extension Router {
 
 // MARK: - Resolve CollectionViewCell
 public extension Router {
+    @MainActor
     func resolve<VM: MvvmViewModelProtocol>(_ viewModel: VM, from tableView: UICollectionView, at indexPath: IndexPath, with supplementaryKind: String? = nil) -> UICollectionViewCell {
         guard let cell = safeResolve(viewModel, from: tableView, at: indexPath, with: supplementaryKind)
         else { fatalError("Could not resolve \(String(describing: type(of: viewModel))). Register it first") }

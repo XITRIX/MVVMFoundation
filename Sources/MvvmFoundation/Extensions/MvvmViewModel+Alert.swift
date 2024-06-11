@@ -47,16 +47,23 @@ public extension MvvmViewModelProtocol {
         for action in actions {
             alert.addAction(action.alertAction)
         }
-        navigationService?()?.present(alert, animated: true)
+
+        Task {
+            await navigationService?()?.navigate(to: alert, by: .present(wrapInNavigation: false))
+        }
     }
 
     func alertWithTimer(_ timer: Double = 2, title: String? = nil, message: String? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        navigationService?()?.present(alert, animated: true)
-        // change alert timer to 2 seconds, then dismiss
-        let when = DispatchTime.now() + timer
-        DispatchQueue.main.asyncAfter(deadline: when) {
-            alert.dismiss(animated: true, completion: nil)
+
+        Task {
+            await navigationService?()?.navigate(to: alert, by: .present(wrapInNavigation: false))
+            
+            // change alert timer to 2 seconds, then dismiss
+            let when = DispatchTime.now() + timer
+            DispatchQueue.main.asyncAfter(deadline: when) {
+                alert.dismiss(animated: true, completion: nil)
+            }
         }
     }
 
@@ -74,6 +81,9 @@ public extension MvvmViewModelProtocol {
         alert.addAction(.init(title: accept, style: .default) { _ in
             result(alert.textFields?.first?.text ?? "")
         })
-        navigationService?()?.present(alert, animated: true)
+
+        Task {
+            await navigationService?()?.navigate(to: alert, by: .present(wrapInNavigation: false))
+        }
     }
 }

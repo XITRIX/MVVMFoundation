@@ -9,7 +9,7 @@ import UIKit
 import Combine
 
 @available(iOS 13.0, *)
-public struct MvvmCollectionSectionModel: Hashable {
+public struct MvvmCollectionSectionModel: Hashable, Sendable {
     public enum Style {
         case plain
         case grouped

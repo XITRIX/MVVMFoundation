@@ -18,6 +18,7 @@ public protocol MvvmTableViewCellProtocol: MvvmViewUIKitCellProtocol, UITableVie
 public protocol MvvmCollectionViewCellProtocol: MvvmViewUIKitCellProtocol, UICollectionViewCell {}
 
 @available(iOS 14.0, *)
+@MainActor
 public protocol MvvmSwiftUICellProtocol: MvvmViewCellProtocol, View {
     associatedtype CellType: UICollectionViewCell
     static var registration: UICollectionView.CellRegistration<CellType, ViewModel> { get }

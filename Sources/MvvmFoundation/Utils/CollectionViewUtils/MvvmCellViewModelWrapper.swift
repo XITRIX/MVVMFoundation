@@ -7,7 +7,7 @@
 
 import UIKit
 
-public struct MvvmCellViewModelWrapper<ViewModel: MvvmViewModelProtocol>: Hashable {
+public struct MvvmCellViewModelWrapper<ViewModel: MvvmViewModelProtocol>: Hashable, Sendable {
     public let viewModel: ViewModel!
 
     public init(viewModel: ViewModel) {

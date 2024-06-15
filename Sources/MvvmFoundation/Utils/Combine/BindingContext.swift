@@ -70,6 +70,10 @@ public enum BindingContext {
     public static func buildExpression(_ expression: AnyCancellable) -> [AnyCancellable] {
         [expression]
     }
+
+    public static func buildExpression(_ expression: AnyCancellable?) -> [AnyCancellable] {
+        expression.map { [$0] } ?? []
+    }
 }
 
 @available(iOS 13.0, *)

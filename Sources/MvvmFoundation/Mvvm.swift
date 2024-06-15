@@ -8,7 +8,7 @@
 import Foundation
 
 public class Mvvm: @unchecked Sendable {
-    public static var shared = Mvvm()
+    public static let shared = Mvvm()
 
     public let container = Container()
     public let router = Router()

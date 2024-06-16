@@ -120,6 +120,7 @@ public extension Router {
     }
 
     @available(iOS 14.0, *)
+    @MainActor
     func register<VM: MvvmViewModelProtocol, V: MvvmSwiftUICellProtocol>(_ cell: V.Type)
         where V.ViewModel == VM
     {

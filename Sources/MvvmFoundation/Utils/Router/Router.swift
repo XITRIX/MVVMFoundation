@@ -124,21 +124,19 @@ public extension Router {
     func register<VM: MvvmViewModelProtocol, V: MvvmSwiftUICellProtocol>(_ cell: V.Type)
         where V.ViewModel == VM
     {
-        Task {
-            _ = await V.registration // Initialise registration
-            storage[String(describing: VM.self)] = { @MainActor model in
-                let (collectionView, viewModel, indexPath, supplementaryKind) = model as! (UICollectionView, VM, IndexPath, String?)
+        _ = V.registration // Initialise registration
+        storage[String(describing: VM.self)] = { @MainActor model in
+            let (collectionView, viewModel, indexPath, supplementaryKind) = model as! (UICollectionView, VM, IndexPath, String?)
 
-                let getCell = {
-                    //                if let supplementaryKind {
-                    //                    return collectionView.dequeueConfiguredReusableSupplementary(using: V.registration, for: indexPath)
-                    //                } else {
-                    return collectionView.dequeueConfiguredReusableCell(using: V.registration, for: indexPath, item: viewModel)
-                    //                }
-                }
-                let cell = getCell()
-                return cell as Any
+            let getCell = {
+                //                if let supplementaryKind {
+                //                    return collectionView.dequeueConfiguredReusableSupplementary(using: V.registration, for: indexPath)
+                //                } else {
+                return collectionView.dequeueConfiguredReusableCell(using: V.registration, for: indexPath, item: viewModel)
+                //                }
             }
+            let cell = getCell()
+            return cell as Any
         }
     }
 }

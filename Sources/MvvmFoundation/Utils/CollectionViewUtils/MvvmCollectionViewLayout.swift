@@ -9,7 +9,7 @@ import UIKit
 
 @available(iOS 14.0, *)
 open class MvvmCollectionViewLayout: UICollectionViewCompositionalLayout {
-    public init(_ dataSource: MvvmCollectionViewDataSource, headerMode: UICollectionLayoutListConfiguration.HeaderMode = .supplementary) {
+    public init(_ dataSource: MvvmCollectionViewDataSource) {
         super.init(sectionProvider: { section, env in
             let sectionModel = dataSource.snapshot().sectionIdentifiers[section]
 
@@ -25,8 +25,8 @@ open class MvvmCollectionViewLayout: UICollectionViewCompositionalLayout {
             if #available(iOS 15, *) {
                 configuration.headerTopPadding = sectionModel.headerTopPadding
             }
-            configuration.headerMode = sectionModel.header == nil ? .none : headerMode
-            configuration.footerMode = sectionModel.footer == nil ? .none : .supplementary
+            configuration.headerMode = sectionModel.header == nil ? sectionModel.headerMode.headerMode : .supplementary
+            configuration.footerMode = sectionModel.footer == nil ? sectionModel.footerMode.footerMode : .supplementary
 
             let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: env)
             return section
@@ -65,6 +65,32 @@ public extension MvvmCollectionSectionModel.Style {
         default:
             return .grouped
 #endif
+        }
+    }
+}
+
+@available(iOS 14.0, *)
+public extension MvvmCollectionSectionModel.HeaderMode {
+    var headerMode: UICollectionLayoutListConfiguration.HeaderMode {
+        switch self {
+        case .none:
+            return .none
+        case .supplementary:
+            return .supplementary
+        case .firstItemInSection:
+            return .firstItemInSection
+        }
+    }
+}
+
+@available(iOS 14.0, *)
+public extension MvvmCollectionSectionModel.FooterMode {
+    var footerMode: UICollectionLayoutListConfiguration.FooterMode {
+        switch self {
+        case .none:
+            return .none
+        case .supplementary:
+            return .supplementary
         }
     }
 }

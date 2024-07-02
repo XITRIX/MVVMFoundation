@@ -19,11 +19,24 @@ public struct MvvmCollectionSectionModel: Hashable, Sendable {
         case platformPlain
     }
 
+    public enum HeaderMode {
+        case none
+        case supplementary
+        case firstItemInSection
+    }
+
+    public enum FooterMode {
+        case none
+        case supplementary
+    }
+
     public let id: String
 
     public var header: AnyPublisher<String, Never>?
     public var headerTopPadding: CGFloat?
+    public var headerMode: HeaderMode
     public var footer: AnyPublisher<String, Never>?
+    public var footerMode: FooterMode
 
     public var style: Style
     public var showsSeparators: Bool
@@ -44,7 +57,9 @@ public struct MvvmCollectionSectionModel: Hashable, Sendable {
     public init(id: String,
                 header: String? = nil,
                 headerTopPadding: CGFloat? = nil,
+                headerMode: HeaderMode = .none,
                 footer: String? = nil,
+                footerMode: FooterMode = .none,
                 style: MvvmCollectionSectionModel.Style = .insetGrouped,
                 showsSeparators: Bool = true,
                 backgroundColor: UIColor? = .clear,
@@ -53,7 +68,9 @@ public struct MvvmCollectionSectionModel: Hashable, Sendable {
         self.id = id
         self.header = .init(header)
         self.headerTopPadding = headerTopPadding
+        self.headerMode = headerMode
         self.footer = .init(footer)
+        self.footerMode = footerMode
         self.style = style
         self.showsSeparators = showsSeparators
         self.backgroundColor = backgroundColor
@@ -63,7 +80,9 @@ public struct MvvmCollectionSectionModel: Hashable, Sendable {
     public init(id: String,
                 header: String? = nil,
                 headerTopPadding: CGFloat? = nil,
+                headerMode: HeaderMode = .none,
                 footer: String? = nil,
+                footerMode: FooterMode = .none,
                 style: MvvmCollectionSectionModel.Style = .insetGrouped,
                 showsSeparators: Bool = true,
                 backgroundColor: UIColor? = .clear,
@@ -72,7 +91,9 @@ public struct MvvmCollectionSectionModel: Hashable, Sendable {
         self.id = id
         self.header = .init(header)
         self.headerTopPadding = headerTopPadding
+        self.headerMode = headerMode
         self.footer = .init(footer)
+        self.footerMode = footerMode
         self.style = style
         self.showsSeparators = showsSeparators
         self.backgroundColor = backgroundColor
@@ -82,7 +103,9 @@ public struct MvvmCollectionSectionModel: Hashable, Sendable {
     public init(id: String,
                 header: AnyPublisher<String, Never>?,
                 headerTopPadding: CGFloat? = nil,
+                headerMode: HeaderMode = .none,
                 footer: AnyPublisher<String, Never>?,
+                footerMode: FooterMode = .none,
                 style: MvvmCollectionSectionModel.Style = .insetGrouped,
                 showsSeparators: Bool = true,
                 backgroundColor: UIColor? = .clear,
@@ -91,7 +114,9 @@ public struct MvvmCollectionSectionModel: Hashable, Sendable {
         self.id = id
         self.header = header
         self.headerTopPadding = headerTopPadding
+        self.headerMode = headerMode
         self.footer = footer
+        self.footerMode = footerMode
         self.style = style
         self.showsSeparators = showsSeparators
         self.backgroundColor = backgroundColor
@@ -101,7 +126,9 @@ public struct MvvmCollectionSectionModel: Hashable, Sendable {
     public init(id: String,
                 header: AnyPublisher<String, Never>?,
                 headerTopPadding: CGFloat? = nil,
+                headerMode: HeaderMode = .none,
                 footer: AnyPublisher<String, Never>?,
+                footerMode: FooterMode = .none,
                 style: MvvmCollectionSectionModel.Style = .insetGrouped,
                 showsSeparators: Bool = true,
                 backgroundColor: UIColor? = .clear,
@@ -110,7 +137,9 @@ public struct MvvmCollectionSectionModel: Hashable, Sendable {
         self.id = id
         self.header = header
         self.headerTopPadding = headerTopPadding
+        self.headerMode = headerMode
         self.footer = footer
+        self.footerMode = footerMode
         self.style = style
         self.showsSeparators = showsSeparators
         self.backgroundColor = backgroundColor

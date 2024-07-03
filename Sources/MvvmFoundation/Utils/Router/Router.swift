@@ -23,6 +23,14 @@ public extension Router {
             return VC(viewModel: vm)
         }
     }
+
+    @available(iOS 14.0, *)
+    func register<View: MvvmSwiftUIViewProtocol>(_ view: View.Type) {
+        storage[String(describing: View.ViewModel.self)] = { @MainActor viewModel in
+            let vm = viewModel as! View.ViewModel
+            return MvvmHostingViewController<View>(viewModel: vm)
+        }
+    }
 }
 
 // MARK: - Safe Resolve ViewController

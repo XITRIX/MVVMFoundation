@@ -152,6 +152,14 @@ public struct MvvmCollectionSectionModel: Hashable, Sendable {
 public enum ViewModelsContext {
     public static func buildBlock() -> [MvvmViewModel] { [] }
 
+    public static func buildBlock(_ components: MvvmViewModel...) -> [MvvmViewModel] {
+        components
+    }
+
+    public static func buildBlock(_ components: [MvvmViewModel]) -> [MvvmViewModel] {
+        components
+    }
+
     public static func buildBlock(_ components: [MvvmViewModel]...) -> [MvvmViewModel] {
         components.flatMap { $0 }
     }
@@ -160,15 +168,27 @@ public enum ViewModelsContext {
         components.flatMap { $0 }
     }
 
-    public static func buildBlock(_ components: [MvvmViewModel]) -> [MvvmViewModel] {
-        components
+    public static func buildEither(first component: [MvvmViewModel]) -> [MvvmViewModel] {
+        component
+    }
+
+    public static func buildEither(second component: [MvvmViewModel]) -> [MvvmViewModel] {
+        component
     }
 
     public static func buildOptional(_ component: [MvvmViewModel]?) -> [MvvmViewModel] {
         component ?? []
     }
 
+    public static func buildExpression(_ expression: [MvvmViewModel?]) -> [MvvmViewModel] {
+        expression.compactMap { $0 }
+    }
+
     public static func buildExpression(_ expression: MvvmViewModel) -> [MvvmViewModel] {
         [expression]
+    }
+
+    public static func buildExpression(_ expression: MvvmViewModel?) -> [MvvmViewModel] {
+        expression.map { [$0] } ?? []
     }
 }

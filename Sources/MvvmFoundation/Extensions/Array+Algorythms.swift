@@ -11,11 +11,8 @@ public extension Array where Element: Hashable {
     var unique: [Element] { removingDuplicates() }
 
     func removingDuplicates() -> [Element] {
-        var addedDict = [Element: Bool]()
-
-        return filter {
-            addedDict.updateValue(true, forKey: $0) == nil
-        }
+        var set = Set<Element>()
+        return filter { set.insert($0).inserted }
     }
 
     mutating func removeDuplicates() {

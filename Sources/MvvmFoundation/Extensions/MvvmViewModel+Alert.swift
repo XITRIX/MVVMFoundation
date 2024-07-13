@@ -42,8 +42,14 @@ private extension MvvmAlertStyle {
 }
 
 public extension MvvmViewModelProtocol {
-    func alert(title: String?, message: String? = nil, style: MvvmAlertStyle = .alert, actions: [MvvmAlertAction]) {
+    func alert(title: String?, message: String? = nil, style: MvvmAlertStyle = .alert, actions: [MvvmAlertAction], sourceView: UIView? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: style.alertStyle)
+
+        if let sourceView {
+            alert.popoverPresentationController?.sourceView = sourceView
+            alert.popoverPresentationController?.sourceRect = sourceView.bounds
+        }
+
         for action in actions {
             alert.addAction(action.alertAction)
         }

@@ -100,9 +100,10 @@ private extension MvvmCollectionView {
         delegate = self
 
         disposeBag.bind {
-            sections.sink { [unowned self] sections in
+            sections.sink { [weak self] sections in
+                guard let self else { return }
                 diffDataSource.applyModels(sections) {
-                    selectedIndexPaths = indexPathsForSelectedItems ?? []
+                    self.selectedIndexPaths = self.indexPathsForSelectedItems ?? []
                 }
             }
 

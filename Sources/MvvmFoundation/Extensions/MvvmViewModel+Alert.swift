@@ -64,7 +64,7 @@ public extension MvvmViewModelProtocol {
 
         Task {
             await navigationService?()?.navigate(to: alert, by: .present(wrapInNavigation: false))
-            
+
             // change alert timer to 2 seconds, then dismiss
             let when = DispatchTime.now() + timer
             DispatchQueue.main.asyncAfter(deadline: when) {
@@ -91,5 +91,41 @@ public extension MvvmViewModelProtocol {
         Task {
             await navigationService?()?.navigate(to: alert, by: .present(wrapInNavigation: false))
         }
+    }
+
+    func textInputs(title: String?, message: String? = nil, textInputs: [MvvmTextInputModel], cancel: String, accept: String, result: @escaping ([String]?) -> Void) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        textInputs.forEach { model in
+            alert.addTextField { textField in
+                textField.placeholder = model.placeholder
+                textField.text = model.defaultValue
+                textField.keyboardType = model.type
+                textField.isSecureTextEntry = model.secured
+            }
+        }
+        alert.addAction(.init(title: cancel, style: .cancel) { _ in
+            result(nil)
+        })
+        alert.addAction(.init(title: accept, style: .default) { _ in
+            result(textInputs.enumerated().map { alert.textFields?[$0.offset].text ?? "" })
+        })
+
+        Task {
+            await navigationService?()?.navigate(to: alert, by: .present(wrapInNavigation: false))
+        }
+    }
+}
+
+public struct MvvmTextInputModel {
+    let placeholder: String?
+    let defaultValue: String?
+    let type: UIKeyboardType
+    let secured: Bool
+
+    public init(placeholder: String?, defaultValue: String? = nil, type: UIKeyboardType = .default, secured: Bool = false) {
+        self.placeholder = placeholder
+        self.defaultValue = defaultValue
+        self.type = type
+        self.secured = secured
     }
 }

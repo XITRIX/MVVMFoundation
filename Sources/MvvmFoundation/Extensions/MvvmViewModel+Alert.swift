@@ -59,14 +59,14 @@ public extension MvvmViewModelProtocol {
         }
     }
 
-    func alertWithTimer(_ timer: Double = 2, title: String? = nil, message: String? = nil) {
+    func alertWithTimer(_ seconds: Double = 2, title: String? = nil, message: String? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
         Task {
             await navigationService?()?.navigate(to: alert, by: .present(wrapInNavigation: false))
 
             // change alert timer to 2 seconds, then dismiss
-            let when = DispatchTime.now() + timer
+            let when = DispatchTime.now() + seconds
             DispatchQueue.main.asyncAfter(deadline: when) {
                 alert.dismiss(animated: true, completion: nil)
             }

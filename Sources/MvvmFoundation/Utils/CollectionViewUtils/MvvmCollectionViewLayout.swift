@@ -19,12 +19,12 @@ open class MvvmCollectionViewLayout: UICollectionViewCompositionalLayout {
             }
 #if !os(tvOS)
             configuration.showsSeparators = sectionModel.showsSeparators
-#endif
             configuration.trailingSwipeActionsConfigurationProvider = dataSource.trailingSwipeActionsConfigurationProvider
 
             if #available(iOS 15, *) {
                 configuration.headerTopPadding = sectionModel.headerTopPadding
             }
+#endif
             configuration.headerMode = sectionModel.header == nil ? sectionModel.headerMode.headerMode : .supplementary
             configuration.footerMode = sectionModel.footer == nil ? sectionModel.footerMode.footerMode : .supplementary
 

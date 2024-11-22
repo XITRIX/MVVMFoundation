@@ -8,6 +8,7 @@
 import Combine
 import UIKit
 
+@available(tvOS 17.0, *)
 @available(iOS 14.0, *)
 public class MvvmCollectionView: UICollectionView {
     public private(set) var diffDataSource: MvvmCollectionViewDataSource!
@@ -20,7 +21,10 @@ public class MvvmCollectionView: UICollectionView {
     public let sections = PassthroughRelay<[MvvmCollectionSectionModel]>()
 
     public var contextMenuConfigurationForItemsAt: ((_ indexPaths: [IndexPath], _ point: CGPoint) -> UIContextMenuConfiguration?)?
+
+#if !os(tvOS)
     public var willPerformPreviewActionForMenuWith: ((_ configuration: UIContextMenuConfiguration, _ animator: any UIContextMenuInteractionCommitAnimating) -> ())?
+    #endif
 
     @Published public var selectedIndexPaths: [IndexPath] = []
 
@@ -52,6 +56,7 @@ public class MvvmCollectionView: UICollectionView {
     }
 }
 
+@available(tvOS 17.0, *)
 @available(iOS 14.0, *)
 extension MvvmCollectionView: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -76,15 +81,19 @@ extension MvvmCollectionView: UICollectionViewDelegate {
         return diffDataSource.snapshot().sectionIdentifiers[indexPath.section].items[indexPath.item].canBeSelected
     }
 
+    @available(tvOS 17.0, *)
     public func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
         contextMenuConfigurationForItemsAt?(indexPaths, point)
     }
 
+#if !os(tvOS)
     public func collectionView(_ collectionView: UICollectionView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: any UIContextMenuInteractionCommitAnimating) {
         willPerformPreviewActionForMenuWith?(configuration, animator)
     }
+#endif
 }
 
+@available(tvOS 17.0, *)
 @available(iOS 14.0, *)
 private extension MvvmCollectionView {
     func setup() {
@@ -130,6 +139,7 @@ private extension MvvmCollectionView {
     }
 }
 
+@available(tvOS 17.0, *)
 @available(iOS 14.0, *)
 extension MvvmCollectionView: UIGestureRecognizerDelegate {
     override public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {

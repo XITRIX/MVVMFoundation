@@ -14,6 +14,7 @@ public class Router {
 // MARK: - - ViewController
 
 // MARK: - Register ViewController
+@MainActor
 public extension Router {
     func register<VM: MvvmViewModelProtocol, VC: MvvmViewControllerProtocol>(_ controller: VC.Type)
         where VC.ViewModel == VM
@@ -97,6 +98,7 @@ public extension Router {
 // MARK: - - CollectionViewCell
 
 // MARK: - Register CollectionViewCell
+@MainActor
 public extension Router {
     func register<VM: MvvmViewModelProtocol, V: MvvmCollectionViewCellProtocol>(_ cell: V.Type)
         where V.ViewModel == VM

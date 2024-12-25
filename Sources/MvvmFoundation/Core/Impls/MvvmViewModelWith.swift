@@ -8,6 +8,6 @@
 import Foundation
 
 @available(iOS 13.0, *)
-open class MvvmViewModelWith<Model>: MvvmViewModel, MvvmViewModelWithProtocol {
+open class MvvmViewModelWith<Model>: MvvmViewModel, MvvmViewModelWithProtocol, @unchecked Sendable {
     open func prepare(with model: Model) {}
 }

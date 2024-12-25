@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol MvvmSelectableProtocol {
-    var selectAction: (() -> Void)? { get }
+    var selectAction: (@MainActor () -> Void)? { get }
 }
 
 @available(iOS 13.0, *)

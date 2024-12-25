@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 @available(iOS 13.0, *)
-open class MvvmViewModel: MvvmViewModelProtocol {
+open class MvvmViewModel: MvvmViewModelProtocol, @unchecked Sendable {
     private let uuid = UUID()
     public weak var parent: (any MvvmViewModelProtocol)?
 

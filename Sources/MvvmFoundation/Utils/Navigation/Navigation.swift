@@ -68,26 +68,23 @@ extension NavigationProtocol where Self: UIViewController {
     }
 }
 
+@MainActor
 public extension MvvmViewModelProtocol {
     func navigate<VM: MvvmViewModelProtocol>(to viewModel: VM.Type, by type: NavigationType) {
-        Task {
-            let vc = await viewModel.init().setParent(self).resolveVC()
-            await navigationService?()?.navigate(to: vc, by: type)
-        }
+        let vc = viewModel.init().setParent(self).resolveVC()
+        navigationService?()?.navigate(to: vc, by: type)
     }
 
     func navigate<Model, VM: MvvmViewModelWithProtocol>(to viewModel: VM.Type, with model: Model, by type: NavigationType) where VM.Model == Model {
-        Task {
-            let vc = await viewModel.init(with: model).setParent(self).resolveVC()
-            await navigationService?()?.navigate(to: vc, by: type)
-        }
+        let vc = viewModel.init(with: model).setParent(self).resolveVC()
+        navigationService?()?.navigate(to: vc, by: type)
     }
 
     func dismiss() {
-        Task { await navigationService?()?.dismiss() }
+        navigationService?()?.dismiss()
     }
 
     func pop() {
-        Task { await navigationService?()?.pop() }
+        navigationService?()?.pop()
     }
 }

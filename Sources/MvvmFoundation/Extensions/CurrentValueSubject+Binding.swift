@@ -5,7 +5,7 @@
 //  Created by Daniil Vinogradov on 08/11/2023.
 //
 
-import Combine
+@preconcurrency import Combine
 import SwiftUI
 
 public extension CurrentValueSubject {

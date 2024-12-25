@@ -25,6 +25,7 @@ public enum MvvmAlertStyle {
 }
 
 private extension MvvmAlertAction {
+    @MainActor
     var alertAction: UIAlertAction {
         .init(title: title, style: style) { _ in action?() }
     }
@@ -42,6 +43,7 @@ private extension MvvmAlertStyle {
 }
 
 public extension MvvmViewModelProtocol {
+    @MainActor
     func alert(title: String?, message: String? = nil, style: MvvmAlertStyle = .alert, actions: [MvvmAlertAction], sourceView: UIView? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: style.alertStyle)
 
@@ -59,20 +61,20 @@ public extension MvvmViewModelProtocol {
         }
     }
 
+    @MainActor
     func alertWithTimer(_ seconds: Double = 2, title: String? = nil, message: String? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        Task {
-            await navigationService?()?.navigate(to: alert, by: .present(wrapInNavigation: false))
+        navigationService?()?.navigate(to: alert, by: .present(wrapInNavigation: false))
 
-            // change alert timer to 2 seconds, then dismiss
-            let when = DispatchTime.now() + seconds
-            DispatchQueue.main.asyncAfter(deadline: when) {
-                alert.dismiss(animated: true, completion: nil)
-            }
+        // change alert timer to 2 seconds, then dismiss
+        let when = DispatchTime.now() + seconds
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            alert.dismiss(animated: true, completion: nil)
         }
     }
 
+    @MainActor
     func textInput(title: String?, message: String? = nil, placeholder: String?, defaultValue: String? = nil, type: UIKeyboardType = .default, secured: Bool = false, cancel: String, accept: String, result: @escaping (String?) -> Void) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addTextField { textField in
@@ -88,11 +90,10 @@ public extension MvvmViewModelProtocol {
             result(alert.textFields?.first?.text ?? "")
         })
 
-        Task {
-            await navigationService?()?.navigate(to: alert, by: .present(wrapInNavigation: false))
-        }
+        navigationService?()?.navigate(to: alert, by: .present(wrapInNavigation: false))
     }
 
+    @MainActor
     func textInputs(title: String?, message: String? = nil, textInputs: [MvvmTextInputModel], cancel: String, accept: String, result: @escaping ([String]?) -> Void) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         textInputs.forEach { model in
@@ -110,9 +111,7 @@ public extension MvvmViewModelProtocol {
             result(textInputs.enumerated().map { alert.textFields?[$0.offset].text ?? "" })
         })
 
-        Task {
-            await navigationService?()?.navigate(to: alert, by: .present(wrapInNavigation: false))
-        }
+        navigationService?()?.navigate(to: alert, by: .present(wrapInNavigation: false))
     }
 }
 

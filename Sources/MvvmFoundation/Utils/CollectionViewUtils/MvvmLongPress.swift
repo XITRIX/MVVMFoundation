@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol MvvmLongPressProtocol {
-    var longPressAction: (() -> Void)? { get }
+    var longPressAction: (@MainActor () -> Void)? { get }
 }
 
 @available(iOS 13.0, *)

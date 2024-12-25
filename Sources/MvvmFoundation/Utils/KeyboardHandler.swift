@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 public class KeyboardHandler {
     public init(_ scrollView: UIScrollView) {
         self.scrollView = scrollView
@@ -28,6 +29,7 @@ private extension KeyboardHandler {
 #endif
     }
 
+    nonisolated
     func unregisterKeyboardNotifications() {
 #if !os(tvOS)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)

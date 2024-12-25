@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-public protocol MvvmViewModelProtocol: MvvmAssociatedObjectHolderProtocol, Hashable {
+public protocol MvvmViewModelProtocol: MvvmAssociatedObjectHolderProtocol, Hashable, Sendable {
 //    var title: CurrentValueSubject<String?, Never> { get }
     var navigationService: (() -> NavigationProtocol?)? { get }
     var parent: (any MvvmViewModelProtocol)? { get }

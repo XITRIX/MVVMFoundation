@@ -12,14 +12,18 @@ public protocol MvvmAssociatedObjectHolderProtocol: AnyObject {
     func getAssociatedObject<T>() -> T?
 }
 
-private var MvvmAssociatedObjectHolderAssociateKey = "MvvmAssociatedObjectHolderAssociateKey"
+private enum MvvmAssociatedObjectHolderKeys {
+    nonisolated(unsafe) static var associateKey: Void?
+}
+
 extension MvvmAssociatedObjectHolderProtocol {
+
     var associatedObjects: [String: Any] {
         get {
-            objc_getAssociatedObject(self, MvvmAssociatedObjectHolderAssociateKey) as? [String: Any] ?? [:]
+            objc_getAssociatedObject(self, &MvvmAssociatedObjectHolderKeys.associateKey) as? [String: Any] ?? [:]
         }
         set {
-            objc_setAssociatedObject(self, MvvmAssociatedObjectHolderAssociateKey, newValue, .OBJC_ASSOCIATION_RETAIN)
+            objc_setAssociatedObject(self, &MvvmAssociatedObjectHolderKeys.associateKey, newValue, .OBJC_ASSOCIATION_RETAIN)
         }
     }
 

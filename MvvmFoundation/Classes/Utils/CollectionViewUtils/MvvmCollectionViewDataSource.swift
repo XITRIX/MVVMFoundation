@@ -10,7 +10,7 @@ import RxSwift
 
 @available(iOS 14.0, *)
 open class MvvmCollectionViewDataSource: UICollectionViewDiffableDataSource<MvvmCollectionSectionModel, MvvmCellViewModelWrapper<MvvmViewModel>> {
-    private let collectionView: UICollectionView
+    private weak var collectionView: UICollectionView!
 
     public var trailingSwipeActionsConfigurationProvider: UICollectionLayoutListConfiguration.SwipeActionsConfigurationProvider?
 

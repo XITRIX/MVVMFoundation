@@ -48,6 +48,11 @@ public extension MvvmViewModelProtocol {
         if let sourceView {
             alert.popoverPresentationController?.sourceView = sourceView
             alert.popoverPresentationController?.sourceRect = sourceView.bounds
+        } else {
+            let view = navigationService?()?.view
+            alert.popoverPresentationController?.sourceView = view
+            alert.popoverPresentationController?.sourceRect = view?.bounds ?? .zero
+            alert.popoverPresentationController?.permittedArrowDirections = []
         }
 
         for action in actions {

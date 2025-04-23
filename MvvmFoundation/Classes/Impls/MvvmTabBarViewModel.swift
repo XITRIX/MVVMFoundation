@@ -6,6 +6,7 @@
 //
 
 import RxRelay
+import UIKit
 
 public struct MvvmTabBarItem {
     let viewModel: any MvvmViewModelProtocol

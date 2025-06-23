@@ -24,9 +24,10 @@ open class MvvmCollectionViewListCell<ViewModel: MvvmViewModelProtocol>: UIColle
 
     private var minimumSystemHeightMarginValue: Double {
 #if os(visionOS)
-        10
-#else
-        8
+        11
+#elseif os(iOS)
+        if #available(iOS 26, *) { 11 }
+        else { 8 }
 #endif
     }
 
@@ -73,6 +74,14 @@ open class MvvmCollectionViewListCell<ViewModel: MvvmViewModelProtocol>: UIColle
                 targetContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                 targetContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
+
+
+            if cellRespectsSystemMinimumHeight {
+                var origin = view.layoutMargins
+                origin.top = max(minimumSystemHeightMarginValue, origin.top)
+                origin.bottom = max(minimumSystemHeightMarginValue, origin.bottom)
+                view.layoutMargins = origin
+            }
         }
     }
 
@@ -101,20 +110,6 @@ open class MvvmCollectionViewListCell<ViewModel: MvvmViewModelProtocol>: UIColle
 
     public func setViewModel(_ viewModel: ViewModel) {
         self.viewModel = viewModel
-    }
-
-    open override var layoutMargins: UIEdgeInsets {
-        get {
-            var res = super.layoutMargins
-            if cellRespectsSystemMinimumHeight {
-                res.top = minimumSystemHeightMarginValue
-                res.bottom = minimumSystemHeightMarginValue
-            }
-            return res
-        }
-        set {
-            super.layoutMargins = newValue
-        }
     }
 }
 

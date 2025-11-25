@@ -10,12 +10,14 @@ import UIKit
 public struct MvvmAlertAction {
     public var title: String
     public var style: UIAlertAction.Style
+    public var isPrimary: Bool
     public var action: (() -> Void)?
 
-    public init(title: String, style: UIAlertAction.Style, action: (() -> Void)? = nil) {
+    public init(title: String, style: UIAlertAction.Style, isPrimary: Bool = false, action: (() -> Void)? = nil) {
         self.title = title
         self.style = style
         self.action = action
+        self.isPrimary = isPrimary
     }
 }
 
@@ -56,7 +58,12 @@ public extension MvvmViewModelProtocol {
         }
 
         for action in actions {
-            alert.addAction(action.alertAction)
+            let uiAction = action.alertAction
+            alert.addAction(uiAction)
+
+            if action.isPrimary {
+                alert.preferredAction = uiAction
+            }
         }
 
         Task {
@@ -89,9 +96,13 @@ public extension MvvmViewModelProtocol {
         alert.addAction(.init(title: cancel, style: .cancel) { _ in
             result(nil)
         })
-        alert.addAction(.init(title: accept, style: .default) { _ in
+
+        let addAction = UIAlertAction(title: accept, style: .default) { _ in
             result(alert.textFields?.first?.text ?? "")
-        })
+        }
+
+        alert.addAction(addAction)
+        alert.preferredAction = addAction
 
         Task {
             await navigationService?()?.navigate(to: alert, by: .present(wrapInNavigation: false))
@@ -111,9 +122,13 @@ public extension MvvmViewModelProtocol {
         alert.addAction(.init(title: cancel, style: .cancel) { _ in
             result(nil)
         })
-        alert.addAction(.init(title: accept, style: .default) { _ in
+
+        let addAction = UIAlertAction(title: accept, style: .default) { _ in
             result(textInputs.enumerated().map { alert.textFields?[$0.offset].text ?? "" })
-        })
+        }
+
+        alert.addAction(addAction)
+        alert.preferredAction = addAction
 
         Task {
             await navigationService?()?.navigate(to: alert, by: .present(wrapInNavigation: false))

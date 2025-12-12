@@ -8,7 +8,7 @@
 import Foundation
 
 @propertyWrapper
-public struct Injected<T> {
+public class Injected<T> {
     let key: ContainerKey?
     public init(key: ContainerKey? = nil) {
         self.key = key

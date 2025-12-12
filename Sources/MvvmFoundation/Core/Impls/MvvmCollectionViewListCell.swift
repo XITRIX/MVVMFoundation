@@ -28,6 +28,8 @@ open class MvvmCollectionViewListCell<ViewModel: MvvmViewModelProtocol>: UIColle
 #elseif os(iOS)
         if #available(iOS 26, *) { 11 }
         else { 8 }
+#else
+        11
 #endif
     }
 

@@ -9,7 +9,7 @@ import UIKit
 
 public enum NavigationType {
     case show
-    case present(wrapInNavigation: Bool)
+    case present(wrapInNavigation: Bool, from: MvvmPresentationSource? = nil)
     case detail(asRoot: Bool)
     case custom(transaction: (_ from: UIViewController, _ to: UIViewController) -> Void)
 }
@@ -42,7 +42,7 @@ extension NavigationProtocol where Self: UIViewController {
         switch type {
         case .show:
             show(navigationProtocol, sender: self)
-        case .present(let wrapInNavigation):
+        case .present(let wrapInNavigation, let source):
             let vc: UIViewController
             if wrapInNavigation {
                 let nvc = UINavigationController.resolve()
@@ -53,6 +53,24 @@ extension NavigationProtocol where Self: UIViewController {
             } else {
                 vc = navigationProtocol
             }
+
+            switch source {
+            case .view(let uiView):
+                if #available(iOS 18.0, tvOS 18.0, *) {
+                    vc.preferredTransition = .zoom(sourceViewProvider: { context in
+                        uiView
+                    })
+                }
+            case .barItem(let uiBarBarItem):
+                if #available(iOS 26.0, tvOS 18.0, *) {
+                    vc.preferredTransition = .zoom(sourceBarButtonItemProvider: { context in
+                        uiBarBarItem
+                    })
+                }
+            case nil:
+                break
+            }
+
             present(vc, animated: true)
         case .detail(let asRoot):
             if asRoot {

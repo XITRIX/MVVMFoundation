@@ -43,18 +43,32 @@ private extension MvvmAlertStyle {
     }
 }
 
+public enum MvvmPresentationSource {
+    case view(UIView)
+    case barItem(UIBarButtonItem)
+}
+
 public extension MvvmViewModelProtocol {
-    func alert(title: String?, message: String? = nil, style: MvvmAlertStyle = .alert, actions: [MvvmAlertAction], sourceView: UIView? = nil) {
+    func alert(title: String?, message: String? = nil, style: MvvmAlertStyle = .alert, actions: [MvvmAlertAction], sourceView: MvvmPresentationSource? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: style.alertStyle)
 
-        if let sourceView {
-            alert.popoverPresentationController?.sourceView = sourceView
-            alert.popoverPresentationController?.sourceRect = sourceView.bounds
-        } else {
-            let view = navigationService?()?.view
-            alert.popoverPresentationController?.sourceView = view
-            alert.popoverPresentationController?.sourceRect = view?.bounds ?? .zero
-            alert.popoverPresentationController?.permittedArrowDirections = []
+        switch sourceView {
+        case .view(let uiView):
+            alert.popoverPresentationController?.sourceView = uiView
+            alert.popoverPresentationController?.sourceRect = uiView.bounds
+        case .barItem(let uiBarButtonItem):
+#if !os(tvOS)
+            if #available(iOS 16.0, *) {
+                alert.popoverPresentationController?.sourceItem = uiBarButtonItem
+            }
+#endif
+        case nil:
+            if style == .actionSheet {
+                let view = navigationService?()?.view
+                alert.popoverPresentationController?.sourceView = view
+                alert.popoverPresentationController?.sourceRect = view?.bounds ?? .zero
+                alert.popoverPresentationController?.permittedArrowDirections = []
+            }
         }
 
         for action in actions {

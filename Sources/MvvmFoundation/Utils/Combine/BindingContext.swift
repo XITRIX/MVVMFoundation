@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-@available(iOS 13.0, *)
+@available(iOS 13.0, tvOS 13.0, *)
 public class DisposeBag: Codable {
     private var cancellables: [AnyCancellable] = []
 
@@ -23,14 +23,14 @@ public class DisposeBag: Codable {
     public func encode(to encoder: any Encoder) throws {}
 }
 
-@available(iOS 13.0, *)
+@available(iOS 13.0, tvOS 13.0, *)
 public extension DisposeBag {
     func bind(@BindingContext block: () -> [AnyCancellable]) {
         block().forEach { append($0) }
     }
 }
 
-@available(iOS 13.0, *)
+@available(iOS 13.0, tvOS 13.0, *)
 @resultBuilder
 public enum BindingContext {
     public static func buildBlock() -> [AnyCancellable] { [] }
@@ -76,12 +76,12 @@ public enum BindingContext {
     }
 }
 
-@available(iOS 13.0, *)
+@available(iOS 13.0, tvOS 13.0, *)
 public func bind(in disposeBag: inout [AnyCancellable], @BindingContext block: () -> [AnyCancellable]) {
     block().forEach { $0.store(in: &disposeBag) }
 }
 
-@available(iOS 13.0, *)
+@available(iOS 13.0, tvOS 13.0, *)
 public func bind(in disposeBag: DisposeBag, @BindingContext block: () -> [AnyCancellable]) {
     block().forEach { disposeBag.append($0) }
 }

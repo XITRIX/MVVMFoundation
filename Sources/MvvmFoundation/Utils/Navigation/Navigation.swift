@@ -56,13 +56,13 @@ extension NavigationProtocol where Self: UIViewController {
 
             switch source {
             case .view(let uiView):
-                if #available(iOS 18.0, tvOS 18.0, *) {
+                if #available(iOS 18.0, tvOS 18.0, visionOS 2.0, *) {
                     vc.preferredTransition = .zoom(sourceViewProvider: { context in
                         uiView
                     })
                 }
             case .barItem(let uiBarBarItem):
-                if #available(iOS 26.0, tvOS 18.0, *) {
+                if #available(iOS 26.0, tvOS 18.0, visionOS 26.0, *) {
                     vc.preferredTransition = .zoom(sourceBarButtonItemProvider: { context in
                         uiBarBarItem
                     })

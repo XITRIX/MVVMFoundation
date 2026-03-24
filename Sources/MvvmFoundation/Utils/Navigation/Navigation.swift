@@ -9,7 +9,7 @@ import UIKit
 
 public enum NavigationType {
     case show
-    case present(wrapInNavigation: Bool, from: MvvmPresentationSource? = nil)
+    case present(wrapInNavigation: Bool, from: MvvmPresentationSource? = nil, style: UIModalPresentationStyle = .automatic)
     case detail(asRoot: Bool)
     case custom(transaction: (_ from: UIViewController, _ to: UIViewController) -> Void)
 }
@@ -42,7 +42,7 @@ extension NavigationProtocol where Self: UIViewController {
         switch type {
         case .show:
             show(navigationProtocol, sender: self)
-        case .present(let wrapInNavigation, let source):
+        case .present(let wrapInNavigation, let source, let style):
             let vc: UIViewController
             if wrapInNavigation {
                 let nvc = UINavigationController.resolve()
@@ -70,6 +70,8 @@ extension NavigationProtocol where Self: UIViewController {
             case nil:
                 break
             }
+
+            vc.modalPresentationStyle = style
 
             present(vc, animated: true)
         case .detail(let asRoot):
